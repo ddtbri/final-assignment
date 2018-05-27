@@ -1,9 +1,21 @@
-﻿<!doctype html>
+﻿<%@LANGUAGE="VBSCRIPT" CODEPAGE="65001"%>
+<!doctype html>
 <html class="no-js" lang="en">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Home</title>
+        <title>主页</title>
+        <style type="text/css">
+        .entrance{
+            font-size: 12pt;
+        }
+            .entrance:hover{
+
+                /*background-color: red;*/
+                color: red;
+
+            }
+        </style>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- 数据库连接 -->
@@ -26,10 +38,10 @@
             conn.open strconnection
         %>
 
-        <!-- 加载函数 -->、
+        <!-- 加载函数 -->
         <%
-            sub load_element(span,name,price,pic_src1,pic_src2)
-                response.write "<div class='col-md-12'><div class='all-pros all-pros-6 animated fadeInUp'><div class='single_product_3 '><span>"&span&"</span></div><div class='sinle_pic'><a href='#'><img class='primary-img' src='"&pic_src1&"' alt='图片加载错误'/><img class='secondary-img' src='"&pic_src2&"' alt='图片加载错误'/></a></div><div class='product-action' data-toggle='modal' data-target='#myModal'><button type='button' class='btn btn-info btn-lg quickview' data-toggle='tooltip' title='Quickview'>Quick View</button>   </div><div class='product_content'><div class='usal_pro'><div class='product_name_2'><h2><a href='#'>"&name&"</a></h2></div><div class='product_price'><div class='price_rating'><a href='#'><i class='fa fa-star'></i></a><a href='#'><i class='fa fa-star'></i></a><a href='#'><i class='fa fa-star'></i></a><a href='#'><i class='fa fa-star'></i></a><a class='not-rated' href='#'><i class='fa fa-star-o' aria-hidden='true'></i></a></div></div><div class='price_box'><span class='spical-price'>￥"&price&"</span></div><div class='last_button_area'><ul class='add-to-links clearfix'><li class='addwishlist'><div class='yith-wcwl-add-button show' ><a class='add_to_wishlist' href='' rel='nofollow' data-product-id='45' data-product-type='external' data-toggle='tooltip' title='' data-original-title='添加收藏'><i class='fa fa-heart'></i></a></div></li><li><div class='new_act'><a class='button_act' data-quick-id='45' href='' title='' data-toggle='tooltip' data-original-title='不买要涨价'>加入购物车</a></div></li>   </ul></div></div></div></div></div>"
+            sub load_element(span,name,price,pic_src1,pic_src2,gid)
+                response.write "<div class='col-md-12'><div class='all-pros all-pros-6 animated fadeInUp'><div class='single_product_3 '><span>"&span&"</span></div><div class='sinle_pic'><a href='#'><img class='primary-img' src='"&pic_src1&"' alt='图片加载错误'/><img class='secondary-img' src='"&pic_src2&"' alt='图片加载错误'/></a></div><div class='product-action' data-toggle='modal' data-target='#myModal'><a href='detail.asp?gid="&gid&"'><button type='button' class='btn btn-info btn-lg quickview' data-toggle='tooltip' title='Quickview'>Quick View</button></a>   </div><div class='product_content'><div class='usal_pro'><div class='product_name_2'><h2><a href='#'>"&name&"</a></h2></div><div class='product_price'><div class='price_rating'><a href='#'><i class='fa fa-star'></i></a><a href='#'><i class='fa fa-star'></i></a><a href='#'><i class='fa fa-star'></i></a><a href='#'><i class='fa fa-star'></i></a><a class='not-rated' href='#'><i class='fa fa-star-o' aria-hidden='true'></i></a></div></div><div class='price_box'><span class='spical-price'>￥"&price&"</span></div><div class='last_button_area'><ul class='add-to-links clearfix'><li class='addwishlist'><div class='yith-wcwl-add-button show' ><a class='add_to_wishlist' href='' rel='nofollow' data-product-id='45' data-product-type='external' data-toggle='tooltip' title='' data-original-title='添加收藏'><i class='fa fa-heart'></i></a></div></li><li><div class='new_act'><a class='button_act' data-quick-id='45' href='' title='' data-toggle='tooltip' data-original-title='不买要涨价'>加入购物车</a></div></li>   </ul></div></div></div></div></div>"
             end sub
         %>
         <!-- all css here -->
@@ -54,6 +66,7 @@
         <link rel="stylesheet" href="css/responsive.css">
         <!-- modernizr js -->
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+        <script type="text/javascript" src="js/jquery-1.11.3.js"></script>
         <style type="text/css">
            /* .col-md-9 col-sm-9{
                 background-color: red;
@@ -71,32 +84,36 @@
                 width: 100%;
             }*/
         </style>
+
+        
     </head>
     <body>
-
-
-
+        
 
         <!--header top area start-->
         <div class="header_area">
             <div class="header_border">
+
                 <div class="container">
                     <div class="row">
                         <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
                             <div class="header_heaft_area">
+                                 <h4 style="margin-top: 15px; font-family: 楷书;">
+        <%response.write "当前用户:" & Session("user")%>
+        </h4>
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
                             <div class="header_right_area">
                                 <ul>
                                     <li>
-                                        <a class="account" href="#">登陆/注册</a>
+                                        <a class="account" id="mylogin" data-toggle="modal" data-target="#myModal" style="cursor: pointer;">登陆/注册</a>
                                     </li>
                                     <li>
-                                        <a class="wishlist" href="#">我的订单</a>
+                                        <a class="wishlist" href="order.asp">我的订单</a>
                                     </li>
                                     <li>
-                                        <a class="Shopping cart" href="#">购物车</a>
+                                        <a class="Shopping cart" href="cart.asp">购物车</a>
                                     </li>
                                    
                                 </ul>
@@ -112,13 +129,13 @@
                     <div class="row">
                         <div class="col-md-3">
                             <div class="logo_area">
-                                <a href="index.html"><img src="img/logo-pic/logo.png" alt="" /></a>
+                                <a href="index.asp"><img src="img/logo-pic/logo.png" alt="" /></a>
                             </div>
                         </div>
                         <div class="col-md-9">
                             <div class="header_all search_box_area">
-                                <form class="new_search" role="search" method="get" action="#">
-                                    <input id="mix_search" class="search-field" placeholder="Search Products…" value="" name="s" title="Search for:" type="search">
+                                <form class="new_search" role="search" method="get" action="search.asp">
+                                    <input id="mix_search" class="search-field" placeholder="查找商品" value="" name="s" title="Search for:" type="search">
                                     <input value="Search" type="submit">
                                     <input name="post_type" value="product" type="hidden">
                                 </form>
@@ -255,13 +272,12 @@
                                             <div class="menu">
                                                 <nav>
                                                     <ul>
-                                                        <li><a href="index.html">主页</a></li>
-														<li><a href="about-us.html">关于</a></li>
-														<li><a href="cart.html">购物车</a></li>
-														<li><a href="list-view.html">收藏</a></li>
-														<li><a href="my.account.html">订单</a></li>
-														<!-- <li><a href="simple-product.html">Product</a></li> -->
-														<li><a href="contact-us.html">联系我们</a></li>
+                                                        <li><a href="index.asp">主页</a></li>
+														<li><a href="about-us.asp">关于</a></li>
+														<li><a href="cart.asp">购物车</a></li>
+														<li><a href="collection.asp">收藏</a></li>
+														<li><a href="order.asp">订单</a></li>
+														<li><a href="contact-us.asp">联系我们</a></li>
                                                     </ul>
                                                 </nav>
                                             </div>
@@ -275,18 +291,18 @@
             </div>
         </div>
         <!-- mobile-menu-area-start -->
-        <div class="mobile-menu-area hidden-md hidden-lg">
+      <!--   <div class="mobile-menu-area hidden-md hidden-lg">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="mobile-menu">
                             <nav id="mobile-menu-active">
                                 <ul id="nav">
-                                    <li><a href="index.html">主页</a></li>
-									<li><a href="about-us.html">关于</a></li>
-									<li><a href="cart.html">购物车</a></li>
+                                    <li><a href="index.asp">主页</a></li>
+									<li><a href="about-us.asp">关于</a></li>
+									<li><a href="cart.asp">购物车</a></li>
 									<li><a href="list-view.html">我的收藏</a></li>
-									<li><a href="my.account.html">Account</a></li>
+									<li><a href="my.account.asp">Account</a></li>
 									<li><a href="simple-product.html">Product</a></li>
 									<li><a href="contact-us.html">联系我们</a></li>
                                 </ul>
@@ -295,7 +311,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <!-- mobile-menu-area-end -->
         <!--slider area start-->
         <section class="slider-area">
@@ -305,7 +321,7 @@
                         <div class="bend niceties preview-2">
                             <div id="ensign-nivoslider" class="slides">
                                 <img src="img/slider/slider1_1-1.jpg" alt="" title="#slider-caption-1" />
-                                <img src="img/slider/slider1_2.jpg" alt="" title="#slider-caption-2" />
+                                <img src="img/slider/slider1_2.png" alt="" title="#slider-caption-2" />
                             </div>
                             <!-- direction 1 -->
                             <div id="slider-caption-1" class="t-cn slider-direction slider-one">
@@ -354,9 +370,9 @@
                                     </div>
                                 </div>
                                 <div class="sld-fr">
-                                    <div class="layer-2-6 animated zoomIn">
+                                    <!-- <div class="layer-2-6 animated zoomIn">
                                         <img src="img/slider/slider-9.png" alt="">
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
@@ -388,14 +404,6 @@
                                     </span>
                                 </a>
                             </li>
-                           <!--  <li>
-                                <a class="google-plus" target="_blank" href="#google-plus">
-                                    <span>
-                                        <i class="fa fa-google-plus"></i>
-                                        <span class="social-text"></span>
-                                    </span>
-                                </a>
-                            </li> -->
                             <li>
                                 <a class="youtube" target="_blank" href="#youtube">
                                     <span>
@@ -404,14 +412,6 @@
                                     </span>
                                 </a>
                             </li>
-                            <!-- <li>
-                                <a class="pinterest" target="_blank" href="#pinterest">
-                                    <span>
-                                        <i class="fa fa-pinterest"></i>
-                                        <span class="social-text">Follow via Pinterest</span>
-                                    </span>
-                                </a>
-                            </li> -->
                             <li>
                                 <a class="mail-to" target="_blank" href="mailto:lionthemes88@gmail.com">
                                     <span>
@@ -452,7 +452,7 @@
                                             if not rs.bof then
                                                 count=0
                                                 do while not rs.eof and count<=4
-                                                    call load_element("new",rs("name"),rs("price"),rs("pic_route"),rs("pic_route2"))
+                                                    call load_element("new",rs("name"),rs("price"),rs("pic_route"),rs("pic_route2"),rs("gid"))
                                                     rs.movenext
                                                     count=count+1
                                                 loop
@@ -535,247 +535,87 @@
                 </div>
                 <div class="row">
                                 <div class="whole_product indicator-brand">
-                                    <%
-                                        sql="select * from goods"
-                                            set rs=conn.execute(sql)
-                                            if not rs.bof then
-                                                count=0
-                                                do while not rs.eof and count<=3
-                                                    call load_element("sale",rs("name"),rs("price"),rs("pic_route"),rs("pic_route2"))
-                                                    rs.movenext
-                                                    count=count+1
-                                                loop
-                                                
-                                            end if
-                                            rs.close
-                                            set rs=nothing
-                                    %>
-                                    <!-- <div class="col-md-12">
+                                    
+                                    <div class="col-md-12" style="cursor: pointer;">
                                         <div class="all-pros animated fadeInUp">
                                             <div class="single_product">
                                                 <span>New</span>
                                             </div>
                                             <div class="sinle_pic">
-                                                <a href="#">
-                                                    <img class="primary-img" src="img/product-pic/product_pic_2.jpg" alt="" />
-                                                    <img class="secondary-img" src="img/product-pic/product_pic_1.jpg" alt="" />
+                                                <a href="goods.asp?type=学生党">
+                                                    <img class="primary-img" src="img/newimage/S1.jpg" style="height: 281px" alt="" />
+                                                    <img class="secondary-img" src="img/newimage/SR15.jpg" alt="" />
                                                 </a>
                                             </div>
-                                            <div class="product-action" data-toggle="modal" data-target="#myModal">
-                                                <button type="button" class="btn btn-info btn-lg quickview" data-toggle="tooltip" title="Quickview">Quick View</button>   
-                                            </div>
+                                            
                                             <div class="product_content">
                                                 <div class="usal_pro">
+
                                                     <div class="product_name_2">
                                                         <h2>
-                                                            <a href="#">shoes</a>
+                                                            <h3><b><i>青春派</i></b></h3>
                                                         </h2>
                                                     </div>
-                                                    <div class="product_price">
-                                                        <div class="price_rating">
-                                                            <a href="#"><i class="fa fa-star"></i></a>
-                                                            <a href="#"><i class="fa fa-star"></i></a>
-                                                            <a href="#">
-                                                                <i class="fa fa-star"></i>
-                                                            </a>
-                                                            <a class="not-rated" href="#">
-                                                                <i class="fa fa-star-o" aria-hidden="true"></i>
-                                                            </a>
-                                                            <a class="not-rated" href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="price_box">
-                                                        <span class="spical-price">￥250.00</span>
-                                                    </div>
-                                                    <div class="last_button_area">
-                                                        <ul class="add-to-links clearfix">
-                                                            <li class="addwishlist">
-                                                                <div class="yith-wcwl-add-button show" >
-                                                                    <a class="add_to_wishlist" href="" rel="nofollow" data-product-id="45" data-product-type="external" data-toggle="tooltip" title="" data-original-title="添加收藏"><i class="fa fa-heart"></i></a>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <div class="new_act">
-                                                                    <a class="button_act" data-quick-id="45" href="" title="" data-toggle="tooltip" data-original-title="不买要涨价">Go to Buy</a>
-                                                                </div>
-                                                            </li>
-                                                            
-                                                        </ul>
-                                                    </div>
+                                                   
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
-                                        <div class="all-pros all-pros-2 animated fadeInUp">
+
+                                    <div class="col-md-12" style="cursor: pointer;">
+                                        <div class="all-pros animated fadeInUp">
                                             <div class="single_product">
                                                 <span>New</span>
                                             </div>
                                             <div class="sinle_pic">
-                                                <a href="#">
-                                                    <img class="primary-img" src="img/product-pic/product_pic_3.jpg" alt="" />
-                                                    <img class="secondary-img" src="img/product-pic/product_pic_4.jpg" alt="" />
+                                                <a href="goods.asp?type=商务机">
+                                                    <img class="primary-img" src="img/newimage/B1.jpg" style="height: 281px" alt="" />
+                                                    <img class="secondary-img" src="img/newimage/SP9.jpg" alt="" />
                                                 </a>
                                             </div>
-                                            <div class="product-action" data-toggle="modal" data-target="#myModal">
-                                                <button type="button" class="btn btn-info btn-lg quickview" data-toggle="tooltip" title="Quickview">Quick View</button>   
-                                            </div>
+                                            
                                             <div class="product_content">
                                                 <div class="usal_pro">
+
                                                     <div class="product_name_2">
                                                         <h2>
-                                                            <a href="#">Duis convallis</a>
+                                                            <h3><b><i>商务精英</i></b></h3>
                                                         </h2>
                                                     </div>
-                                                    <div class="product_price">
-                                                        <div class="price_rating">
-                                                            <a href="#"><i class="fa fa-star"></i></a>
-                                                            <a href="#"><i class="fa fa-star"></i></a>
-                                                            <a href="#">
-                                                                <i class="fa fa-star"></i>
-                                                            </a>
-                                                            <a href="#"><i class="fa fa-star"></i></a>
-                                                            <a class="not-rated" href="#">
-                                                                <i class="fa fa-star-o" aria-hidden="true"></i>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="price_box">
-                                                        <span class="spical-price">￥100.00</span>
-                                                    </div>
-                                                    <div class="last_button_area">
-                                                        <ul class="add-to-links clearfix">
-                                                            <li class="addwishlist">
-                                                                <div class="yith-wcwl-add-button show" >
-                                                                    <a class="add_to_wishlist" href="" rel="nofollow" data-product-id="45" data-product-type="external" data-toggle="tooltip" title="" data-original-title="添加收藏"><i class="fa fa-heart"></i></a>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <div class="new_act">
-                                                                    <a class="button_act" data-quick-id="45" href="" title="" data-toggle="tooltip" data-original-title="不买要涨价">加入购物车</a>
-                                                                </div>
-                                                            </li>
-                                                           
-                                                        </ul>
-                                                    </div>
+                                                   
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
-                                        <div class="all-pros all-pros-3 animated fadeInUp">
+
+                                    <div class="col-md-12" style="cursor: pointer;">
+                                        <div class="all-pros animated fadeInUp">
                                             <div class="single_product">
                                                 <span>New</span>
                                             </div>
                                             <div class="sinle_pic">
-                                                <a href="#">
-                                                    <img class="primary-img" src="img/product-pic/product_pic_5.jpg" alt="" />
-                                                    <img class="secondary-img" src="img/product-pic/product_pic_6.jpg" alt="" />
+                                                <a href="goods.asp?type=老年机">
+                                                    <img class="primary-img" src="img/newimage/OLD1.jpg" style="height: 281px" alt="" />
+                                                    <img class="secondary-img" src="img/newimage/OLD2.jpg" alt="" />
                                                 </a>
                                             </div>
-                                            <div class="product-action" data-toggle="modal" data-target="#myModal">
-                                                <button type="button" class="btn btn-info btn-lg quickview" data-toggle="tooltip" title="Quickview">Quick View</button>   
-                                            </div>
+                                            
                                             <div class="product_content">
                                                 <div class="usal_pro">
+
                                                     <div class="product_name_2">
                                                         <h2>
-                                                            <a href="#">Adipiscing cursus eu</a>
+                                                            <h3><b><i>老年时尚</i></b></h3>
                                                         </h2>
                                                     </div>
-                                                    <div class="product_price">
-                                                        <div class="price_rating">
-                                                            <a href="#"><i class="fa fa-star"></i></a>
-                                                            <a href="#"><i class="fa fa-star"></i></a>
-                                                            <a href="#">
-                                                            <i class="fa fa-star"></i>
-                                                            </a>
-                                                            <a class="not-rated" href="#">
-                                                            <i class="fa fa-star-o" aria-hidden="true"></i>
-                                                            </a>
-                                                            <a class="not-rated" href="#">
-                                                            <i class="fa fa-star-o"></i>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="price_box">
-                                                        <span class="<spical-></spical->price">￥300.00</span>
-                                                    </div>
-                                                    <div class="last_button_area">
-                                                        <ul class="add-to-links clearfix">
-                                                            <li class="addwishlist">
-                                                                <div class="yith-wcwl-add-button show" >
-                                                                    <a class="add_to_wishlist" href="" rel="nofollow" data-product-id="45" data-product-type="external" data-toggle="tooltip" title="" data-original-title="添加收藏"><i class="fa fa-heart"></i></a>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <div class="new_act">
-                                                                    <a class="button_act" data-quick-id="45" href="" title="" data-toggle="tooltip" data-original-title="不买要涨价">加入购物车</a>
-                                                                </div>
-                                                            </li>
-                                                          
-                                                        </ul>
-                                                    </div>
+                                                   
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
-                                        <div class="all-pros all-pros-4 animated fadeInUp">
-                                            <div class="single_product single_product_2">
-                                                <span>hot</span>
-                                            </div>
-                                            <div class="single_product_3 ">
-                                                <span>sale</span>
-                                            </div>
-                                            <div class="sinle_pic">
-                                                <a href="#">
-                                                <img class="primary-img" src="img/product-pic/product_pic_7.jpg" alt="" />
-                                                <img class="secondary-img" src="img/product-pic/product_pic_6.jpg" alt="" />
-                                                </a>
-                                            </div>
-                                            <div class="product-action" data-toggle="modal" data-target="#myModal">
-                                                <button type="button" class="btn btn-info btn-lg quickview" data-toggle="tooltip" title="Quickview">Quick View</button>   
-                                            </div>
-                                            <div class="product_content">
-                                                <div class="usal_pro">
-                                                    <div class="product_name_2">
-                                                        <h2>
-                                                            <a href="#">Cras nec nisl ut erat</a>
-                                                        </h2>
-                                                    </div>
-                                                    <div class="product_price">
-                                                        <div class="price_rating">
-                                                            <a href="#"><i class="fa fa-star"></i></a>
-                                                            <a href="#"><i class="fa fa-star"></i></a>
-                                                            <a href="#"><i class="fa fa-star"></i></a>
-                                                            <a href="#"><i class="fa fa-star"></i></a>
-                                                            <a class="not-rated" href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="price_box">
-                                                        <span class="old-price">￥250.00</span>
-                                                        <span class="spical-price">￥200.00</span>
-                                                    </div>
-                                                    <div class="last_button_area">
-                                                        <ul class="add-to-links clearfix">
-                                                            <li class="addwishlist">
-                                                                <div class="yith-wcwl-add-button show" >
-                                                                    <a class="add_to_wishlist" href="" rel="nofollow" data-product-id="45" data-product-type="external" data-toggle="tooltip" title="" data-original-title="添加收藏"><i class="fa fa-heart"></i></a>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <div class="new_act">
-                                                                    <a class="button_act" data-quick-id="45" href="" title="" data-toggle="tooltip" data-original-title="不买要涨价">加入购物车</a>
-                                                                </div>
-                                                            </li>
-                                                            
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> -->
+                                   
+                                    
+                                    
                                     
                                     
                                 </div>
@@ -961,52 +801,22 @@
         <!--modal content start-->
         <!-- Modal -->
         <div class="modal fade" id="myModal" role="dialog">
+
             <div class="modal-dialog modal-dialog-2">
                 <!-- Modal content-->
-                <div class="modal-content">
+                <div class="modal-content" style="background-image: url(img/newimage/register.jpg);background-size: 80% 55%;background-attachment: fixed; background-repeat: no-repeat;">
+
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
-                    <div class="modal-body">
-                        <div class="modal-product">
-                            <div class="row">
-                                <div class="new_port new_port_2">
-                                    <div class="port_pix">
-                                        <img src="img/product-pic/product_pic_2.jpg" alt="">
-                                    </div>
-                                </div>
-                                <div class="elav_titel elav_titel_2">
-                                    <div class="elv_heading elv_heading_therteen">
-                                        <h3>不买要涨价</h3>
-                                    </div>
-                                    <div class="elav_info">
-                                        <div class="price_box price_box_pb">
-                                            <span class="spical-price spical-price-nk">￥250.00</span>
-                                        </div>
-                                        <form class="cart-btn-area cart-btn-area-dec" action="#">
-                                            <a class="see-all" href="#">See all features</a><br>
-                                            <input type="number" value="1">
-                                            <button class="add-tocart add-tocart-2" type="submit">加入购物车</button>
-                                        </form>
-                                    </div>
-                                    <div class="evavet_description evavet_description_dec">
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce posuere metus vitae arcu imperdiet, id aliquet ante scelerisque. Sed sit amet sem vitae urna fringilla tempus.</p>
-                                    </div>
-                                    <div class="elavetor_social">
-                                        <h3 class="widget-title">Share this product</h3>
-                                        <br>
-                                        <ul class="social-link social-link-bbt">
-                                            <li><a class="fb" data-original-title="facebook" href="#" title="" data-toggle="tooltip"><i class="fa fa-facebook"></i></a></li>
-                                            <li><a class="twit" data-original-title="twitter" href="#" title="" data-toggle="tooltip"><i class="fa fa-twitter"></i></a></li>
-                                            <li><a class="pinter" data-original-title="pinterest" href="#" title="" data-toggle="tooltip"><i class="fa fa-pinterest"></i></a></li>
-                                            <li><a class="google+" href="#" title="Google+" data-target="#productModal" data-toggle="tooltip"><i class="fa fa-google-plus"></i></a></li>
-                                            <li><a class="lindin" href="#" title="LinkedIn" data-target="#productModal" data-toggle="tooltip"><i class="fa fa-linkedin"></i></a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="modal-body" style="width: 300px;height: 200px;">
+                        
+                        <div class="modal-product" style="cursor: pointer;" >
+                            <div class="userentrance" style="border:1px solid;border-radius:5px;width: 100px;height:40px;text-align: center;margin-left:270px;margin-top: 0px;line-height: 40px;" ><a href="login.asp">用户登陆</a></div>
+                            <div class="superentrance" style="border:1px solid;border-radius:5px;width: 100px;height:40px;text-align: center;margin-left:380px;margin-top: -40px;line-height: 40px;"><a href="http://127.0.0.1:8080/admin">管理员登陆</a></div>
                         </div>
                     </div>
+                    <!-- <img src="img/newimage/register.jpg" style="width: 600px;height: 200px;"> -->
                 </div>
             </div>
         </div>
