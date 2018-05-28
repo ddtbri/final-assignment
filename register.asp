@@ -15,12 +15,12 @@
 		$("#but1").mouseover(function(){
 			
 
-			var user=$("#yhm").text();
+			var user=$("#yhm").val();
 			if(user==""){
 				alert("用户名不能为空");
 			return ;
 			}
-			var pass=$("#password").text();
+			var pass=$("#password").val();
 		if(pass==""){
 			alert("密码不能为空");
 			return ;

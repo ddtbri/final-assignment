@@ -7,7 +7,24 @@
         <title>联系我们</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-		
+		<%
+            Function ReadFromTextFile (FileUrl,CharSet)
+                dim str
+                set stm=server.CreateObject("adodb.stream")
+                stm.Type=2
+                stm.mode=3 
+                stm.charset=CharSet
+                stm.open
+                stm.loadfromfile server.MapPath(FileUrl)
+                str=stm.readtext
+                stm.Close
+                set stm=nothing
+                ReadFromTextFile=str
+            End Function
+            strconnection=ReadFromTextFile("other/odbc.ini","utf-8")
+            set conn = server.createobject("adodb.connection") 
+            conn.open strconnection
+        %>
         <!-- all css here -->
         <!-- bootstrap v3.3.6 css -->
         <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -32,6 +49,7 @@
         <link rel="stylesheet" href="css/responsive.css">
         <!-- modernizr js -->
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+        <script src="js/vendor/jquery-1.12.0.min.js"></script>
     </head>
     <body>
 
@@ -53,8 +71,45 @@
                              <div class="header_right_area">
                                 <ul>
                                     <li>
-                                        <a class="account" id="mylogin" data-toggle="modal" data-target="#myModal" style="cursor: pointer;">登陆/注册</a>
+                                        <a class="account" id="mylogin" data-toggle="modal" data-target="#myModal" style="cursor: pointer;">
+                                        <%
+                                            if Session("user")="" and Session("pass")="" then
+                                                Response.Cookies("whetherlogin")="False"
+                                                
+                                            else
+                                                Response.Cookies("whetherlogin")="True"
+                                            end if
+                                        %>
+                                        </a>
                                     </li>
+                                    <script>
+                                        function getCookie(c_name)
+                                        {
+                                        if (document.cookie.length>0)
+                                          {
+                                          c_start=document.cookie.indexOf(c_name + "=")
+                                          if (c_start!=-1)
+                                            { 
+                                            c_start=c_start + c_name.length+1 
+                                            c_end=document.cookie.indexOf(";",c_start)
+                                            if (c_end==-1) c_end=document.cookie.length
+                                            return unescape(document.cookie.substring(c_start,c_end))
+                                            } 
+                                          }
+                                        return ""
+                                        }
+                                        var jud=getCookie("whetherlogin")
+                                        if(jud=="True")
+                                        {
+                                            $("#mylogin").html("退出登录")
+                                            $("#mylogin").removeAttr("data-target")
+                                            $("#mylogin").attr("href","index.asp?logout=True")
+                                        }
+                                        else
+                                        {
+                                            $("#mylogin").html("登录/注册")
+                                        }
+                                    </script>
                                     <li>
                                         <a class="wishlist" href="order.asp">我的订单</a>
                                     </li>
@@ -80,7 +135,7 @@
                         </div>
                         <div class="col-md-9">
                             <div class="header_all search_box_area">
-                                <form class="new_search" role="search" method="get" action="#">
+                                <form class="new_search" role="search" method="get" action="search.asp">
                                     <input id="mix_search" class="search-field" placeholder="查找商品" value="" name="s" title="Search for:" type="search">
                                     <input value="Search" type="submit">
                                     <input name="post_type" value="product" type="hidden">
@@ -92,56 +147,53 @@
                                         <a class="cart-toggler" href="">
                                         <i class="icon"></i>
                                         <span class="my-cart">购物车</span>
-                                        <span class="qty">2 件</span>
+                                        
                                         <span class="fa fa-angle-down"></span>
                                         </a>
                                         <div class="new_cart_section">
                                             <ol class="new-list">
-                                                <!-- single item -->
-                                                <li class="wimix_area">
-                                                    <a class="pix_product" href="">
-                                                    <img alt="" src="img/product-pic/7-150x98.jpg">
-                                                    </a>
-                                                    <div class="product-details">
-                                                        <a href="#">Adipiscing cursus eu</a>
-                                                        <span class="sig-price">1×￥300.00</span>
-                                                    </div>
-                                                    <div class="cart-remove">
-                                                        <a class="action" href="#">
-                                                        <i class="fa fa-close"></i>
-                                                        </a>
-                                                    </div>
-                                                </li>
-                                                <!-- single item -->
-                                                <!-- single item -->
-                                                <li class="wimix_area">
-                                                    <a class="pix_product" href="#">
-                                                    <img alt="" src="img/product-pic/1-150x98.jpg">
-                                                    </a>
-                                                    <div class="product-details">
-                                                        <a href="#">Duis convallis</a>
-                                                        <span class="sig-price">1×￥100.00</span>
-                                                    </div>
-                                                    <div class="cart-remove">
-                                                        <a class="action" href="#">
-                                                        <i class="fa fa-close"></i>
-                                                        </a>
-                                                    </div>
-                                                </li>
-                                                <!-- single item -->
+                                            
+                                                <%
+                                                function load_li(img_route,name,price,amount)
+
+                                                    response.write "<li class='wimix_area'><a class='pix_product' href=''><img alt='' src='"&img_route&"'></a><div class='product-details'><a href='#'>"&name&"</a><span class='sig-price'>"&amount&"×￥"&price&"</span></div><div class='cart-remove'><a class='action' href='#'><i class='fa fa-close'></i></a></div></li>"
+                                                end function
+                                                    
+                                                    sql="select * from user where uid='"&Session("user")&"'and password='"&Session("pass")&"'"
+                                                    set rs=conn.execute(sql)
+                                                    if rs.bof then
+                                                        rs.close
+                                                        set rs=nothing
+                                                    else
+                                                    
+                                                        set rs=nothing
+                                                        sql2="select goods.name,goods.price,goods.pic_route,cart.uid,cart.gid,cart.amount from goods,cart where goods.gid=cart.gid and cart.uid='"&Session("user")&"'"
+                                                        alltotal=0
+                                                        set rs=conn.execute(sql2)
+                                                        if not rs.bof then
+                                                            do while not rs.eof
+                                                                call load_li(rs("pic_route"),rs("name"),rs("price"),rs("amount"))
+                                                                alltotal=alltotal+rs("price")*rs("amount")
+                                                                rs.movenext
+                                                            loop
+                                                        end if
+                                                    end if
+                                                    
+
+                                                %>
+                                               
                                             </ol>
                                             <div class="top-subtotal">
-                                                总价: <span class="sig-price">￥400.00</span>
+                                                Subtotal: <span class="sig-price">￥<%=alltotal%></span>
                                             </div>
                                             <div class="cart-button">
                                                 <ul>
                                                     <li>
-                                                        <a href="cart.asp">
-                                                        浏览购物车
-                                                        <i class="fa fa-angle-right"></i>
-                                                        </a>
+                                                        <a href="cart.asp">View my cart <i class="fa fa-angle-right"></i></a>
                                                     </li>
-                                                    
+                                                    <li>
+                                                        <a href="#">Checkout <i class="fa fa-angle-right"></i></a>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -623,6 +675,10 @@
             }
             google.maps.event.addDomListener(window, 'load', initialize);
         </script> -->
+        <%
+        conn.close
+        set conn=nothing
+    %>
     </body>
 </html>
 

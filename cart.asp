@@ -2,6 +2,30 @@
 <!doctype html>
 <html class="no-js" lang="en">
     <head>
+    <%
+            Function ReadFromTextFile (FileUrl,CharSet)
+                dim str
+                set stm=server.CreateObject("adodb.stream")
+                stm.Type=2
+                stm.mode=3 
+                stm.charset=CharSet
+                stm.open
+                stm.loadfromfile server.MapPath(FileUrl)
+                str=stm.readtext
+                stm.Close
+                set stm=nothing
+                ReadFromTextFile=str
+            End Function
+            strconnection=ReadFromTextFile("other/odbc.ini","utf-8")
+            set conn = server.createobject("adodb.connection") 
+            conn.open strconnection
+    %>
+    <%
+        function load_tr(img_route,name,price,amount,gid)
+            total=price*amount
+            response.write "<tr value='"&gid&"'><td class='product-remove product-remove_2'><button type='button' class='cross'>×</button></td><td class='product-thumbnail product-thumbnail-2'><a href='#'><img src='"&img_route&"' alt='' /></a></td><td class='product-name product-name_2'><a href='#'>"&name&"</a></td><td class='product-price'><span class='amount-list amount-list-2'>￥"&price&"</span></td><td class='product-stock-status'><div class='latest_es_from_2'><input class='cart_amount' type='number' min='1' value='"&amount&"'></div></td><td class='product-price'><span class='amount-list amount-list-2'>￥"&total&"</span></td></tr>"
+        end function
+    %>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <title>购物车</title>
@@ -30,6 +54,8 @@
         <link rel="stylesheet" href="css/responsive.css">
         <!-- modernizr js -->
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+        <script src="js/vendor/jquery-1.12.0.min.js"></script>
+        
     </head>
     <body>
 
@@ -51,8 +77,45 @@
                             <div class="header_right_area">
                                 <ul>
                                    <li>
-                                        <a class="account" id="mylogin" data-toggle="modal" data-target="#myModal" style="cursor: pointer;">登陆/注册</a>
+                                        <a class="account" id="mylogin" data-toggle="modal" data-target="#myModal" style="cursor: pointer;">
+                                        <%
+                                            if Session("user")="" and Session("pass")="" then
+                                                Response.Cookies("whetherlogin")="False"
+                                                
+                                            else
+                                                Response.Cookies("whetherlogin")="True"
+                                            end if
+                                        %>
+                                        </a>
                                     </li>
+                                    <script>
+                                        function getCookie(c_name)
+                                        {
+                                        if (document.cookie.length>0)
+                                          {
+                                          c_start=document.cookie.indexOf(c_name + "=")
+                                          if (c_start!=-1)
+                                            { 
+                                            c_start=c_start + c_name.length+1 
+                                            c_end=document.cookie.indexOf(";",c_start)
+                                            if (c_end==-1) c_end=document.cookie.length
+                                            return unescape(document.cookie.substring(c_start,c_end))
+                                            } 
+                                          }
+                                        return ""
+                                        }
+                                        var jud=getCookie("whetherlogin")
+                                        if(jud=="True")
+                                        {
+                                            $("#mylogin").html("退出登录")
+                                            $("#mylogin").removeAttr("data-target")
+                                            $("#mylogin").attr("href","index.asp?logout=True")
+                                        }
+                                        else
+                                        {
+                                            $("#mylogin").html("登录/注册")
+                                        }
+                                    </script>
                                     <li>
                                         <a class="wishlist" href="order.asp">我的订单</a>
                                     </li>
@@ -77,7 +140,7 @@
                         </div>
                         <div class="col-md-9">
                             <div class="header_all search_box_area">
-                                <form class="new_search" role="search" method="get" action="#">
+                                <form class="new_search" role="search" method="get" action="search.asp">
                                     <input id="mix_search" class="search-field" placeholder="查找商品" value="" name="s" title="Search for:" type="search">
                                     <input value="Search" type="submit">
                                     <input name="post_type" value="product" type="hidden">
@@ -312,7 +375,7 @@
                             <div class="wishlist-content wishlist-content-2">
                                 <form action="#">
                                     <div class="wishlist-table wishlist-table-2 table-responsive">
-                                        <table>
+                                        <table id="cart_table">
                                             <thead>
                                                 <tr>
                                                     <th class="product-remove"><span class="nobr"></span></th>
@@ -324,44 +387,33 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td class="product-remove product-remove_2"><a href="#">×</a></td>
-                                                    <td class="product-thumbnail product-thumbnail-2"><a href="#"><img src="img/wishlist/pic-1.jpg" alt="" /></a></td>
-                                                    <td class="product-name product-name_2"><a href="#">Duis convallis</a></td>
-                                                    <td class="product-price"><span class="amount-list amount-list-2">￥100.00</span></td>
-                                                    <td class="product-stock-status">
-                                                        <div class="latest_es_from_2">
-                                                            <input type="number" value="1">
-                                                        </div>
-                                                    </td>
-                                                    <td class="product-price"><span class="amount-list amount-list-2">￥100.00</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="product-remove product-remove_2"><a href="#">×</a></td>
-                                                    <td class="product-thumbnail product-thumbnail-2"><a href="#"><img src="img/wishlist/pic-2.jpg" alt="" /></a></td>
-                                                    <td class="product-name"><a href="#">Adipiscing cursus eu</a></td>
-                                                    <td class="product-price"><span class="amount-list amount-list-2">￥300.00</span></td>
-                                                    <td class="product-stock-status">
-                                                        <div class="latest_es_from_2">
-                                                            <input type="number" value="1">
-                                                        </div>
-                                                    </td>
-                                                    <td class="product-price"><span class="amount-list amount-list-2">￥100.00</span></td>
-                                                </tr>
+                                                
+                                                <%
+                                                    
+                                                    sql="select * from user where uid='"&Session("user")&"'and password='"&Session("pass")&"'"
+                                                    set rs=conn.execute(sql)
+                                                    if rs.bof then
+                                                        rs.close
+                                                        set rs=nothing
+                                                        response.redirect "index.asp"
+                                                    end if
+                                                    set rs=nothing
+                                                    sql2="select goods.name,goods.price,goods.pic_route,cart.uid,cart.gid,cart.amount from goods,cart where goods.gid=cart.gid and cart.uid='"&Session("user")&"'"
+                                                    alltotal=0
+                                                    set rs=conn.execute(sql2)
+                                                    if not rs.bof then
+                                                        do while not rs.eof
+                                                            call load_tr(rs("pic_route"),rs("name"),rs("price"),rs("amount"),rs("gid"))
+                                                            alltotal=alltotal+rs("price")*rs("amount")
+                                                            rs.movenext
+                                                        loop
+                                                    end if
+
+                                                %>
                                             </tbody>
-                                            <tfoot>
-                                                <tr>
-                                                    <td colspan="6">
-                                                        <div class="coupon">
-                                                            <label for="coupon_code"></label>
-                                                            <input id="coupon_code" class="input-text" type="text" placeholder="购物卷号码" value="" name="coupon_code">
-                                                            <a class="button_act button_act_3 button_act_333 button_act_tp " href="#">使用优惠卷</a>
-                                                            <!-- <a class="button_act btn-tip " href="#">Update cart</a> -->
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </tfoot>
+                                            
                                         </table>
+                                        
                                     </div>
                                 </form>
                                 <div class="row">
@@ -370,22 +422,14 @@
                                             <h2>购物车总览</h2>
                                             <table class="shop_table shop_table_responsive">
                                                 <tbody>
-                                                    <tr class="cart-subtotal">
-                                                        <th>Subtotal</th>
-                                                        <td data-title="Subtotal">
-                                                            <span class="woocommerce-Price-amount amount">
-                                                            <span class="woocommerce-Price-currencySymbol">￥</span>
-                                                            800.00
-                                                            </span>
-                                                        </td>
-                                                    </tr>
+                                                    
                                                     <tr class="order-total">
                                                         <th>Total</th>
                                                         <td data-title="Total">
                                                             <strong>
-                                                            <span class="woocommerce-Price-amount amount">
-                                                            <span class="woocommerce-Price-currencySymbol">￥</span>
-                                                            800.00
+                                                            <span class="woocommerce-Price-amount amount" >
+                                                            <span class="woocommerce-Price-currencySymbol" >￥</span>
+                                                            <div id="acount"><%response.write alltotal%></div>
                                                             </span>
                                                             </strong>
                                                         </td>
@@ -393,8 +437,73 @@
                                                 </tbody>
                                             </table>
                                             <div class="wc-proceed-to-checkout">
-                                                <a class="button_act button_act-tc " data-toggle="modal" data-target="#myModal" style="cursor: pointer;">	结算购物车</a>
+                                                <div class="button_act button_act-tc " data-toggle="modal"  id="submit1" style="cursor: pointer;">	结算购物车</div>
+                                                <div class="button_act button_act-tc " id="update" data-toggle="modal"  style="cursor: pointer;"> 提交购物车</div>
                                             </div>
+                                            <script type="text/javascript">
+                                                $("#update").click(function(){
+                                                    url=window.location.href
+                                                    modify=""
+                                                    var t=$("tbody")
+                                                    t.children("tr").each(function(){
+                                                        id=$(this).attr("value")
+                                                        amount=$(this).children(".product-stock-status").children("div").children("input").val()
+                                                        if(id != undefined)
+                                                            modify=modify+id+":"+amount+","
+                                                    });
+                                                    modify=modify.substr(0,modify.length-1)
+                                                    window.location.href="renew_cart.asp?modify="+modify+"&href="+url
+                                                });
+                                                $("#submit1").click(function(){
+                                                    location.href="checkout.asp"
+                                                });
+                                            </script>>
+                                            <!-- <td class="product-remove product-remove_2"><a href="#">×</a></td><td class="product-thumbnail product-thumbnail-2"><a href="#"><img src="img/product-pic/1-150x98.jpg" alt=""></a></td><td class="product-name product-name_2"><a href="#">aaaaaa</a></td><td class="product-price"><span class="amount-list amount-list-2">￥200</span></td><td class="product-stock-status"><div class="latest_es_from_2"><input class="cart_amount" type="number" value="10"></div></td><td class="product-price"><span class="amount-list amount-list-2">￥2000</span></td> -->
+                                            <script type="text/javascript">
+                                                
+                                                $(".cart_amount").click(function(){
+                                                    var s=$(this).parent().parent().parent()
+                                                    var price=s.children(".product-price").children("span").html().substr(1)
+                                                    var totalprice=s.children(".product-price:eq(1)").children("span")
+                                                    var old_tol=totalprice.html().substr(1)
+                                                    var amount=$(this).val()
+                                                    var change=0
+                                                    if (amount=="")
+                                                        change=0
+                                                    else
+                                                        change=parseInt(price)*parseInt(amount)
+                                                    totalprice.html("￥"+change)
+
+                                                });
+                                                $(".cart_amount").mouseout(function(){
+                                                    var s=$(this).parent().parent().parent()
+                                                    var price=s.children(".product-price").children("span").html().substr(1)
+                                                    var totalprice=s.children(".product-price:eq(1)").children("span")
+                                                    var amount=$(this).val()
+                                                    var change=0
+                                                    if (amount=="")
+                                                        change=0
+                                                    else
+                                                        change=parseInt(price)*parseInt(amount)
+                                                    totalprice.html("￥"+change)
+                                                });
+                                                $("#cart_table").mouseout(function(){
+                                                    total=0
+                                                    var s=$(this).children("tbody").children("tr").each(function(){
+                                                        var totalprice=$(this).children(".product-price:eq(1)").children("span").html().substr(1)
+                                                        total=total+parseInt(totalprice)
+                                                    });
+                                                    $("#acount").html(""+total)
+                                                });
+                                                $(".cross").click(function(){
+                                                    url=window.location.href
+                                                    var s=$(this).parent().parent().parent()
+                                                    var t=s.children("tr")
+                                                    var gid=t.attr("value")
+                                                    location.href="remove_cart.asp?gid="+gid+"&href="+url
+
+                                                });
+                                            </script>
                                              <!-- <div class="product-action" data-toggle="modal" data-target="#myModal">
                                                 <button type="button" class="btn btn-info btn-lg quickview" data-toggle="tooltip" title="Quickview">Quick View</button>   
                                             </div> -->
@@ -699,6 +808,11 @@
         <script src="js/plugins.js"></script>
         <!-- main js -->
         <script src="js/main.js"></script>
+        <%
+        rs.close
+set rs=nothing
+conn.close
+set conn=nothing%>
     </body>
 </html>
 

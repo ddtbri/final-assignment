@@ -49,7 +49,7 @@
         <link rel="stylesheet" href="css/responsive.css">
         <!-- modernizr js -->
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
-
+		<script src="js/vendor/jquery-1.12.0.min.js"></script>
         <style type="text/css">
         	*{
 		margin: 0;
@@ -143,8 +143,45 @@
                             <div class="header_right_area">
                                 <ul>
                                    <li>
-                                        <a class="account" id="mylogin" data-toggle="modal" data-target="#myModal" style="cursor: pointer;">登陆/注册</a>
+                                        <a class="account" id="mylogin" data-toggle="modal" data-target="#myModal" style="cursor: pointer;">
+                                        <%
+                                            if Session("user")="" and Session("pass")="" then
+                                                Response.Cookies("whetherlogin")="False"
+                                                
+                                            else
+                                                Response.Cookies("whetherlogin")="True"
+                                            end if
+                                        %>
+                                        </a>
                                     </li>
+                                    <script>
+                                        function getCookie(c_name)
+                                        {
+                                        if (document.cookie.length>0)
+                                          {
+                                          c_start=document.cookie.indexOf(c_name + "=")
+                                          if (c_start!=-1)
+                                            { 
+                                            c_start=c_start + c_name.length+1 
+                                            c_end=document.cookie.indexOf(";",c_start)
+                                            if (c_end==-1) c_end=document.cookie.length
+                                            return unescape(document.cookie.substring(c_start,c_end))
+                                            } 
+                                          }
+                                        return ""
+                                        }
+                                        var jud=getCookie("whetherlogin")
+                                        if(jud=="True")
+                                        {
+                                            $("#mylogin").html("退出登录")
+                                            $("#mylogin").removeAttr("data-target")
+                                            $("#mylogin").attr("href","index.asp?logout=True")
+                                        }
+                                        else
+                                        {
+                                            $("#mylogin").html("登录/注册")
+                                        }
+                                    </script>
                                     <li>
                                         <a class="wishlist" href="order.asp">我的订单</a>
                                     </li>
@@ -722,6 +759,10 @@
         <script src="js/plugins.js"></script>
         <!-- main js -->
         <script src="js/main.js"></script>
+        <%
+        conn.close
+        set conn=nothing
+    %>
     </body>
 </html>
 

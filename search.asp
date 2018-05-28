@@ -29,6 +29,7 @@
     <link rel="stylesheet" href="css/responsive.css">
     <!-- modernizr js -->
     <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+    <script src="js/vendor/jquery-1.12.0.min.js"></script>
     <style type="text/css">
     *{
         margin: 0;
@@ -60,8 +61,27 @@
 
         <!-- 加载函数 -->、
         <%
-            sub load_element(span,name,price,pic_src1,pic_src2)
-                response.write "<div class='col-md-12'><div class='all-pros all-pros-6 animated fadeInUp'><div class='single_product_3 '><span>"&span&"</span></div><div class='sinle_pic'><a href='#'><img class='primary-img' src='"&pic_src1&"' alt='图片加载错误'/><img class='secondary-img' src='"&pic_src2&"' alt='图片加载错误'/></a></div><div class='product-action' data-toggle='modal' data-target='#myModal'><button type='button' class='btn btn-info btn-lg quickview' data-toggle='tooltip' title='Quickview'>Quick View</button>   </div><div class='product_content'><div class='usal_pro'><div class='product_name_2'><h2><a href='#'>"&name&"</a></h2></div><div class='product_price'><div class='price_rating'><a href='#'><i class='fa fa-star'></i></a><a href='#'><i class='fa fa-star'></i></a><a href='#'><i class='fa fa-star'></i></a><a href='#'><i class='fa fa-star'></i></a><a class='not-rated' href='#'><i class='fa fa-star-o' aria-hidden='true'></i></a></div></div><div class='price_box'><span class='spical-price'>￥"&price&"</span></div><div class='last_button_area'><ul class='add-to-links clearfix'><li class='addwishlist'><div class='yith-wcwl-add-button show' ><a class='add_to_wishlist' href='' rel='nofollow' data-product-id='45' data-product-type='external' data-toggle='tooltip' title='' data-original-title='添加收藏'><i class='fa fa-heart'></i></a></div></li><li><div class='new_act'><a class='button_act' data-quick-id='45' href='' title='' data-toggle='tooltip' data-original-title='不买要涨价'>加入购物车</a></div></li>   </ul></div></div></div></div></div>"
+            Function GetUrl() 
+            On Error Resume Next 
+            Dim strTemp 
+            If LCase(Request.ServerVariables("HTTPS")) = "off" Then 
+             strTemp = "http://"
+            Else 
+             strTemp = "https://"
+            End If 
+            strTemp = strTemp & Request.ServerVariables("SERVER_NAME") 
+            If Request.ServerVariables("SERVER_PORT") <> 80 Then 
+             strTemp = strTemp & ":" & Request.ServerVariables("SERVER_PORT") 
+            end if
+            strTemp = strTemp & Request.ServerVariables("URL") 
+            If Trim(Request.QueryString) <> "" Then 
+             strTemp = strTemp & "?" & Trim(Request.QueryString) 
+            end if
+            GetUrl = strTemp 
+            End Function
+            url=GetUrl()
+            sub load_element(span,name,price,pic_src1,pic_src2,gid)
+                response.write "<div class='col-md-12'><div class='all-pros all-pros-6 animated fadeInUp'><div class='single_product_3 '><span>"&span&"</span></div><div class='sinle_pic'><a href='#'><img class='primary-img' src='"&pic_src1&"' alt='图片加载错误'/><img class='secondary-img' src='"&pic_src2&"' alt='图片加载错误'/></a></div><div class='product-action' data-toggle='modal' data-target='#myModal'><a href='detail.asp?gid="&gid&"'><button type='button' class='btn btn-info btn-lg quickview' data-toggle='tooltip' title='Quickview'>Quick View</button></a>   </div><div class='product_content'><div class='usal_pro'><div class='product_name_2'><h2><a href='#'>"&name&"</a></h2></div><div class='product_price'><div class='price_rating'><a href='#'><i class='fa fa-star'></i></a><a href='#'><i class='fa fa-star'></i></a><a href='#'><i class='fa fa-star'></i></a><a href='#'><i class='fa fa-star'></i></a><a class='not-rated' href='#'><i class='fa fa-star-o' aria-hidden='true'></i></a></div></div><div class='price_box'><span class='spical-price'>￥"&price&"</span></div><div class='last_button_area'><ul class='add-to-links clearfix'><li class='addwishlist'><div class='yith-wcwl-add-button show' ><a class='add_to_wishlist' href='' rel='nofollow' data-product-id='45' data-product-type='external' data-toggle='tooltip' title='' data-original-title='添加收藏'><i class='fa fa-heart'></i></a></div></li><li><div class='new_act'><a class='button_act' data-quick-id='45' href='add_cart.asp?href="&url&"&gid="&gid&"' title='' data-toggle='tooltip' data-original-title='不买要涨价'>加入购物车</a></div></li>   </ul></div></div></div></div></div>"
             end sub
         %>
 
@@ -81,8 +101,45 @@
                         <div class="header_right_area">
                             <ul>
                                 <li>
-                                    <a class="account" id="mylogin" data-toggle="modal" data-target="#myModal" style="cursor: pointer;">登陆/注册</a>
-                                </li>
+                                        <a class="account" id="mylogin" data-toggle="modal" data-target="#myModal" style="cursor: pointer;">
+                                        <%
+                                            if Session("user")="" and Session("pass")="" then
+                                                Response.Cookies("whetherlogin")="False"
+                                                
+                                            else
+                                                Response.Cookies("whetherlogin")="True"
+                                            end if
+                                        %>
+                                        </a>
+                                    </li>
+                                    <script>
+                                        function getCookie(c_name)
+                                        {
+                                        if (document.cookie.length>0)
+                                          {
+                                          c_start=document.cookie.indexOf(c_name + "=")
+                                          if (c_start!=-1)
+                                            { 
+                                            c_start=c_start + c_name.length+1 
+                                            c_end=document.cookie.indexOf(";",c_start)
+                                            if (c_end==-1) c_end=document.cookie.length
+                                            return unescape(document.cookie.substring(c_start,c_end))
+                                            } 
+                                          }
+                                        return ""
+                                        }
+                                        var jud=getCookie("whetherlogin")
+                                        if(jud=="True")
+                                        {
+                                            $("#mylogin").html("退出登录")
+                                            $("#mylogin").removeAttr("data-target")
+                                            $("#mylogin").attr("href","index.asp?logout=True")
+                                        }
+                                        else
+                                        {
+                                            $("#mylogin").html("登录/注册")
+                                        }
+                                    </script>
                                 <li>
                                     <a class="wishlist" href="order.asp">我的订单</a>
                                 </li>
@@ -121,64 +178,56 @@
                                     <a class="cart-toggler" href="">
                                         <i class="icon"></i>
                                         <span class="my-cart">购物车</span>
-                                        <span class="qty">2件</span>
+                                        
                                         <span class="fa fa-angle-down"></span>
                                     </a>
                                     <div class="new_cart_section">
-                                        <ol class="new-list">
-                                            <!-- single item -->
-                                            <li class="wimix_area">
-                                                <a class="pix_product" href="">
-                                                    <img alt="" src="img/product-pic/7-150x98.jpg">
-                                                </a>
-                                                <div class="product-details">
-                                                    <a href="#">Adipiscing cursus eu</a>
-                                                    <span class="sig-price">1×￥300.00</span>
-                                                </div>
-                                                <div class="cart-remove">
-                                                    <a class="action" href="#">
-                                                        <i class="fa fa-close"></i>
-                                                    </a>
-                                                </div>
-                                            </li>
-                                            <!-- single item -->
-                                            <!-- single item -->
-                                            <li class="wimix_area">
-                                                <a class="pix_product" href="#">
-                                                    <img alt="" src="img/product-pic/1-150x98.jpg">
-                                                </a>
-                                                <div class="product-details">
-                                                    <a href="#">Duis convallis</a>
-                                                    <span class="sig-price">1×￥100.00</span>
-                                                </div>
-                                                <div class="cart-remove">
-                                                    <a class="action" href="#">
-                                                        <i class="fa fa-close"></i>
-                                                    </a>
-                                                </div>
-                                            </li>
-                                            <!-- single item -->
-                                        </ol>
-                                        <div class="top-subtotal">
-                                            总价: <span class="sig-price">￥400.00</span>
+                                            <ol class="new-list">
+                                            
+                                                <%
+                                                function load_li(img_route,name,price,amount)
+
+                                                    response.write "<li class='wimix_area'><a class='pix_product' href=''><img alt='' src='"&img_route&"'></a><div class='product-details'><a href='#'>"&name&"</a><span class='sig-price'>"&amount&"×￥"&price&"</span></div><div class='cart-remove'><a class='action' href='#'><i class='fa fa-close'></i></a></div></li>"
+                                                end function
+                                                    
+                                                    sql="select * from user where uid='"&Session("user")&"'and password='"&Session("pass")&"'"
+                                                    set rs=conn.execute(sql)
+                                                    if rs.bof then
+                                                        rs.close
+                                                        set rs=nothing
+                                                    else
+                                                    
+                                                        set rs=nothing
+                                                        sql2="select goods.name,goods.price,goods.pic_route,cart.uid,cart.gid,cart.amount from goods,cart where goods.gid=cart.gid and cart.uid='"&Session("user")&"'"
+                                                        alltotal=0
+                                                        set rs=conn.execute(sql2)
+                                                        if not rs.bof then
+                                                            do while not rs.eof
+                                                                call load_li(rs("pic_route"),rs("name"),rs("price"),rs("amount"))
+                                                                alltotal=alltotal+rs("price")*rs("amount")
+                                                                rs.movenext
+                                                            loop
+                                                        end if
+                                                    end if
+                                                    
+
+                                                %>
+                                               
+                                            </ol>
+                                            <div class="top-subtotal">
+                                                Subtotal: <span class="sig-price">￥<%=alltotal%></span>
+                                            </div>
+                                            <div class="cart-button">
+                                                <ul>
+                                                    <li>
+                                                        <a href="cart.asp">View my cart <i class="fa fa-angle-right"></i></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">Checkout <i class="fa fa-angle-right"></i></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </div>
-                                        <div class="cart-button">
-                                            <ul>
-                                                <li>
-                                                    <a href="cart.asp">
-                                                        浏览购物车
-                                                        <i class="fa fa-angle-right"></i>
-                                                    </a>
-                                                </li>
-                                                <!-- <li>
-                                                    <a href="#">
-                                                        结算
-                                                        <i class="fa fa-angle-right"></i>
-                                                    </a>
-                                                </li> -->
-                                            </ul>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -349,7 +398,7 @@
                                             if not rs.bof then
                                                 count=0
                                                 do while not rs.eof
-                                                    call load_element("new",rs("name"),rs("price"),rs("pic_route"),rs("pic_route2"))
+                                                    call load_element("new",rs("name"),rs("price"),rs("pic_route"),rs("pic_route2"),rs("gid"))
                                                     rs.movenext
                                                     count=count+1
                                                 loop
@@ -531,6 +580,10 @@
 <script src="js/plugins.js"></script>
 <!-- main js -->
 <script src="js/main.js"></script>
+<%
+        conn.close
+        set conn=nothing
+    %>
 </body>
 </html>
 
