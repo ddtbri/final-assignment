@@ -1,13 +1,12 @@
-<%@LANGUAGE="VBSCRIPT" CODEPAGE="65001"%>
+﻿<%@LANGUAGE="VBSCRIPT" CODEPAGE="65001"%>
 <!doctype html>
 <html class="no-js" lang="en">
     <head>
-        <meta charset="utf-8">
-        <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>收藏</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-		<%
+    <%
+    if request.Cookies("whetherlogin")="False" then
+    Response.Write("<SCRIPT>alert('have not login!');this.location.href='"&request.ServerVariables("HTTP_REFERER")&"';</SCRIPT>")
+    response.end
+    end if
             Function ReadFromTextFile (FileUrl,CharSet)
                 dim str
                 set stm=server.CreateObject("adodb.stream")
@@ -24,7 +23,19 @@
             strconnection=ReadFromTextFile("other/odbc.ini","utf-8")
             set conn = server.createobject("adodb.connection") 
             conn.open strconnection
-        %>
+    %>
+    <%
+        function load_tr(img_route,name,price,amount,gid)
+            total=price*amount
+            response.write "<tr value='"&gid&"'><td class='product-remove product-remove_2'><button type='button' class='cross'>×</button></td><td class='product-thumbnail product-thumbnail-2'><a href='#'><img src='"&img_route&"' alt='' /></a></td><td class='product-name product-name_2'><a href='#'>"&name&"</a></td><td class='product-price'><span class='amount-list amount-list-2'>￥"&price&"</span></td></tr>"
+        end function
+    %>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>购物车</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+		
         <!-- all css here -->
         <!-- bootstrap v3.3.6 css -->
         <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -48,6 +59,7 @@
         <!-- modernizr js -->
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
         <script src="js/vendor/jquery-1.12.0.min.js"></script>
+        
     </head>
     <body>
 
@@ -139,63 +151,65 @@
                                 </form>
                             </div>
                             <div class="header_all shopping_cart_area">
-                                <div class="widget_shopping_cart_content">
+                                <!-- <div class="widget_shopping_cart_content">
                                     <div class="topcart">
                                         <a class="cart-toggler" href="">
                                         <i class="icon"></i>
                                         <span class="my-cart">购物车</span>
-                                        
+                                        <span class="qty">2 件</span>
                                         <span class="fa fa-angle-down"></span>
                                         </a>
                                         <div class="new_cart_section">
                                             <ol class="new-list">
-                                            
-                                                <%
-                                                function load_li(img_route,name,price,amount)
-
-                                                    response.write "<li class='wimix_area'><a class='pix_product' href=''><img alt='' src='"&img_route&"'></a><div class='product-details'><a href='#'>"&name&"</a><span class='sig-price'>"&amount&"×￥"&price&"</span></div><div class='cart-remove'><a class='action' href='#'><i class='fa fa-close'></i></a></div></li>"
-                                                end function
-                                                    
-                                                    sql="select * from user where uid='"&Session("user")&"'and password='"&Session("pass")&"'"
-                                                    set rs=conn.execute(sql)
-                                                    if rs.bof then
-                                                        rs.close
-                                                        set rs=nothing
-                                                    else
-                                                    
-                                                        set rs=nothing
-                                                        sql2="select goods.name,goods.price,goods.pic_route,cart.uid,cart.gid,cart.amount from goods,cart where goods.gid=cart.gid and cart.uid='"&Session("user")&"'"
-                                                        alltotal=0
-                                                        set rs=conn.execute(sql2)
-                                                        if not rs.bof then
-                                                            do while not rs.eof
-                                                                call load_li(rs("pic_route"),rs("name"),rs("price"),rs("amount"))
-                                                                alltotal=alltotal+rs("price")*rs("amount")
-                                                                rs.movenext
-                                                            loop
-                                                        end if
-                                                    end if
-                                                    
-
-                                                %>
-                                               
-                                            </ol>
+                                              
+                                                <li class="wimix_area">
+                                                    <a class="pix_product" href="">
+                                                    <img alt="" src="img/product-pic/7-150x98.jpg">
+                                                    </a>
+                                                    <div class="product-details">
+                                                        <a href="#">Adipiscing cursus eu</a>
+                                                        <span class="sig-price">1×￥300.00</span>
+                                                    </div>
+                                                    <div class="cart-remove">
+                                                        <a class="action" href="#">
+                                                        <i class="fa fa-close"></i>
+                                                        </a>
+                                                    </div>
+                                                </li>
+                                                
+                                                <li class="wimix_area">
+                                                    <a class="pix_product" href="#">
+                                                    <img alt="" src="img/product-pic/1-150x98.jpg">
+                                                    </a>
+                                                    <div class="product-details">
+                                                        <a href="#">Duis convallis</a>
+                                                        <span class="sig-price">1×￥100.00</span>
+                                                    </div>
+                                                    <div class="cart-remove">
+                                                        <a class="action" href="#">
+                                                        <i class="fa fa-close"></i>
+                                                        </a>
+                                                    </div>
+                                                </li>
+                                                <!-- single item -->
+                                            <!-- </ol>
                                             <div class="top-subtotal">
-                                                Subtotal: <span class="sig-price">￥<%=alltotal%></span>
+                                                总价: <span class="sig-price">￥400.00</span>
                                             </div>
                                             <div class="cart-button">
                                                 <ul>
                                                     <li>
-                                                        <a href="cart.asp">View my cart <i class="fa fa-angle-right"></i></a>
+                                                        <a href="cart.asp">
+                                                        浏览购物车
+                                                        <i class="fa fa-angle-right"></i>
+                                                        </a>
                                                     </li>
-                                                    <li>
-                                                        <a href="#">Checkout <i class="fa fa-angle-right"></i></a>
-                                                    </li>
+                                                    
                                                 </ul>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
+                                    </div> -->
+                                <!-- </div>  -->
                             </div>
                         </div>
                     </div>
@@ -355,7 +369,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="account_heading account_heading_ah">
-                            <h1>购物车</h1>
+                            <h1>收藏栏</h1>
                         </div>
                     </div>
                 </div>
@@ -365,93 +379,71 @@
                             <div class="wishlist-content wishlist-content-2">
                                 <form action="#">
                                     <div class="wishlist-table wishlist-table-2 table-responsive">
-                                        <table>
+                                        <table id="cart_table">
                                             <thead>
                                                 <tr>
                                                     <th class="product-remove"><span class="nobr"></span></th>
                                                     <th class="product-thumbnail product-thumbnail-2"></th>
                                                     <th class="product-name product-name_2"><span class="nobr" style="padding-left: 70px;font-size: 14pt;">产品</span></th>
                                                     <th class="product-price"><span class="nobr" style="padding-left:60px;font-size:14pt;"> 价格 </span></th>
-                                                    <th class="product-stock-stauts"><span class="nobr" style="padding-left:50px;font-size:14pt;"> 添加购物车 </span></th>
                                                     
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td class="product-remove product-remove_2"><a href="#">×</a></td>
-                                                    <td class="product-thumbnail product-thumbnail-2"><a href="#"><img src="img/wishlist/pic-1.jpg" alt="" /></a></td>
-                                                    <td class="product-name product-name_2"><a href="#">Duis convallis</a></td>
-                                                    <td class="product-price"><span class="amount-list amount-list-2">￥100.00</span></td>
-                                                    <!-- <td class="product-stock-status">
-                                                        <div class="latest_es_from_2">
-                                                            <input type="number" value="1">
-                                                        </div>
-                                                    </td> -->
-                                                    <td class="add-to-cart"><span class="amount-list amount-list-2" style="padding: 50px"><input type="button" value="添加"/></span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="product-remove product-remove_2"><a href="#">×</a></td>
-                                                    <td class="product-thumbnail product-thumbnail-2"><a href="#"><img src="img/wishlist/pic-2.jpg" alt="" /></a></td>
-                                                    <td class="product-name"><a href="#">Adipiscing cursus eu</a></td>
-                                                    <td class="product-price"><span class="amount-list amount-list-2">￥300.00</span></td>
-                                                    <!-- <td class="product-stock-status">
-                                                        <div class="latest_es_from_2">
-                                                            <input type="number" value="1">
-                                                        </div>
-                                                    </td> -->
-                                                    <td class="add-to-cart"><span class="amount-list amount-list-2" style="padding: 50px;"> <input type="button" value="添加"/></span></td>
-                                                </tr>
+                                                
+                                                <%
+                                                    
+                                                    sql="select * from user where uid='"&Session("user")&"'and password='"&Session("pass")&"'"
+                                                    set rs=conn.execute(sql)
+                                                    if rs.bof then
+                                                        rs.close
+                                                        set rs=nothing
+                                                        response.redirect "index.asp"
+                                                    end if
+                                                    set rs=nothing
+                                                    sql2="select goods.name,goods.price,goods.pic_route,collection.uid,collection.gid,collection.amount from goods,collection where goods.gid=collection.gid and collection.uid='"&Session("user")&"'"
+                                                    alltotal=0
+                                                    set rs=conn.execute(sql2)
+                                                    if not rs.bof then
+                                                        do while not rs.eof
+                                                            call load_tr(rs("pic_route"),rs("name"),rs("price"),rs("amount"),rs("gid"))
+                                                            alltotal=alltotal+rs("price")*rs("amount")
+                                                            rs.movenext
+                                                        loop
+                                                    end if
+
+                                                %>
                                             </tbody>
-                                            <tfoot>
-                                              <!--   <tr>
-                                                    <td colspan="6">
-                                                        <div class="coupon">
-                                                            <label for="coupon_code"></label>
-                                                            <input id="coupon_code" class="input-text" type="text" placeholder="Coupon code" value="" name="coupon_code">
-                                                            <a class="button_act button_act_3 button_act_333 button_act_tp " href="#">使用优惠卷</a>
-                                                          
-                                                        </div>
-                                                    </td>
-                                                </tr> -->
-                                            </tfoot>
+                                            
                                         </table>
+                                        
                                     </div>
                                 </form>
-                                <div class="row" style="height: 100px;">
-                                   <!--  <div class="col-md-6 col-xs-12">
+                                <div class="row">
+                                    <div class="col-md-6 col-xs-12">
                                         <div class="cart_totals ">
-                                            <h2>购物车总览</h2>
-                                            <table class="shop_table shop_table_responsive">
-                                                <tbody>
-                                                    <tr class="cart-subtotal">
-                                                        <th>Subtotal</th>
-                                                        <td data-title="Subtotal">
-                                                            <span class="woocommerce-Price-amount amount">
-                                                            <span class="woocommerce-Price-currencySymbol">￥</span>
-                                                            800.00
-                                                            </span>
-                                                        </td>
-                                                    </tr>
-                                                    <tr class="order-total">
-                                                        <th>Total</th>
-                                                        <td data-title="Total">
-                                                            <strong>
-                                                            <span class="woocommerce-Price-amount amount">
-                                                            <span class="woocommerce-Price-currencySymbol">￥</span>
-                                                            800.00
-                                                            </span>
-                                                            </strong>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                            <div class="wc-proceed-to-checkout">
-                                                <a class="button_act button_act-tc " href="#">	结算购物车</a>
-                                            </div>
+                                            
+                                            
+                                            
+                                            <!-- <td class="product-remove product-remove_2"><a href="#">×</a></td><td class="product-thumbnail product-thumbnail-2"><a href="#"><img src="img/product-pic/1-150x98.jpg" alt=""></a></td><td class="product-name product-name_2"><a href="#">aaaaaa</a></td><td class="product-price"><span class="amount-list amount-list-2">￥200</span></td><td class="product-stock-status"><div class="latest_es_from_2"><input class="cart_amount" type="number" value="10"></div></td><td class="product-price"><span class="amount-list amount-list-2">￥2000</span></td> -->
+                                            <script type="text/javascript">
+                                                
+                                                
+                                                $(".cross").click(function(){
+                                                    var s=$(this).parent().parent().parent()
+                                                    var t=s.children("tr")
+                                                    var gid=t.attr("value")
+                                                    location.href="remove_collection.asp?gid="+gid
+
+                                                });
+                                            </script>
+                                             <!-- <div class="product-action" data-toggle="modal" data-target="#myModal">
+                                                <button type="button" class="btn btn-info btn-lg quickview" data-toggle="tooltip" title="Quickview">Quick View</button>   
+                                            </div> -->
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-xs-12">
-                                    </div> -->
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -637,6 +629,56 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="myModal2" role="dialog">
+            <div class="modal-dialog modal-dialog-2">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="modal-product">
+                            <div class="row">
+                                <div class="new_port new_port_2">
+                                    <div class="port_pix">
+                                        <img src="img/product-pic/product_pic_2.jpg" alt="">
+                                    </div>
+                                </div>
+                                <div class="elav_titel elav_titel_2">
+                                    <div class="elv_heading elv_heading_therteen">
+                                        <h3>不买要涨价</h3>
+                                    </div>
+                                    <div class="elav_info">
+                                        <div class="price_box price_box_pb">
+                                            <span class="spical-price spical-price-nk">￥250.00</span>
+                                        </div>
+                                        <form class="cart-btn-area cart-btn-area-dec" action="#">
+                                            <a class="see-all" href="#">See all features</a><br>
+                                            <input type="number" value="1">
+                                            <button class="add-tocart add-tocart-2" type="submit">加入购物车</button>
+                                        </form>
+                                    </div>
+                                    <div class="evavet_description evavet_description_dec">
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce posuere metus vitae arcu imperdiet, id aliquet ante scelerisque. Sed sit amet sem vitae urna fringilla tempus.</p>
+                                    </div>
+                                    <div class="elavetor_social">
+                                        <h3 class="widget-title">Share this product</h3>
+                                        <br>
+                                        <ul class="social-link social-link-bbt">
+                                            <li><a class="fb" data-original-title="facebook" href="#" title="" data-toggle="tooltip"><i class="fa fa-facebook"></i></a></li>
+                                            <li><a class="twit" data-original-title="twitter" href="#" title="" data-toggle="tooltip"><i class="fa fa-twitter"></i></a></li>
+                                            <li><a class="pinter" data-original-title="pinterest" href="#" title="" data-toggle="tooltip"><i class="fa fa-pinterest"></i></a></li>
+                                            <li><a class="google+" href="#" title="Google+" data-target="#productModal" data-toggle="tooltip"><i class="fa fa-google-plus"></i></a></li>
+                                            <li><a class="lindin" href="#" title="LinkedIn" data-target="#productModal" data-toggle="tooltip"><i class="fa fa-linkedin"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!--footer middle area end-->
         <!--footer bottom area start-->
         <div class="footer-bottom">
@@ -700,9 +742,10 @@
         <!-- main js -->
         <script src="js/main.js"></script>
         <%
-        conn.close
-        set conn=nothing
-    %>
+        rs.close
+set rs=nothing
+conn.close
+set conn=nothing%>
     </body>
 </html>
 

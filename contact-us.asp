@@ -371,28 +371,28 @@
                                 <h1>留下评论</h1>
                                 <!-- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris convallis sed neque vitae bibendum. Nunc auctor dictum risus, a finibus eros iaculis nec. Sed et euismod felis, non euismod est. Maecenas quis nulla ullamcorper, imperdiet lacu</p> -->
                             </div>
-                            <form class="side_right">
+                            <form class="side_right" method="post" action="add_commit.asp">
                                 <div class="al_form-fields al_form-fields-2">
                                     <p>
                                         你的名字 (必填)
-                                        <input type="text">
+                                        <input type="text" name="name">
                                     </p>
                                     <p>
                                         你的邮箱 (必填)
-                                        <input type="password">
+                                        <input type="password" name="email">
                                     </p>
                                     <p>
                                         评论
                                         <br>
                                         <span class="wpcf7-form-control-wrap your-message">
-                                        <textarea class="wpcf7-form-control wpcf7-textarea wpcf7-validates-as-required" aria-invalid="false" aria-required="true" rows="10" cols="40" name="your-message"></textarea>
+                                        <textarea class="wpcf7-form-control wpcf7-textarea wpcf7-validates-as-required" aria-invalid="false" aria-required="true" rows="10" cols="40" name="message"></textarea>
                                         </span>
                                     </p>
                                     <p>* 必填字段</p>
                                 </div>
                                 <div class="form-action form-action-2">
                                     <div class="new_act new_act_3">
-                                        <a class="button_act button_act_3" href="#">提交</a>
+                                        <input type="submit" value="提交">
                                     </div>
                                 </div>
                             </form>

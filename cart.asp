@@ -3,6 +3,10 @@
 <html class="no-js" lang="en">
     <head>
     <%
+    if request.Cookies("whetherlogin")="False" then
+    Response.Write("<SCRIPT>alert('have not login!');this.location.href='"&request.ServerVariables("HTTP_REFERER")&"';</SCRIPT>")
+    response.end
+    end if
             Function ReadFromTextFile (FileUrl,CharSet)
                 dim str
                 set stm=server.CreateObject("adodb.stream")

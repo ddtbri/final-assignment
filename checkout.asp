@@ -33,11 +33,12 @@
                                                     else
                                                     	rs.close
                                                         set rs=nothing
-                                                        oid=make_id()
+                                                        
                                                         sql2="select * from cart where uid='"&Session("user")&"'"
                                                         set rs=conn.execute(sql2)
                                                         if not rs.bof then
                                                         do while not rs.eof
+                                                            oid=make_id()
                                                         	sql3="insert into gorder values('"&oid&"','"&rs("gid")&"','"&Session("user")&"',now(),"&rs("amount")&")"
                                                         	conn.execute(sql3)
                                                         	rs.movenext

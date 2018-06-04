@@ -443,8 +443,7 @@
 			des=rs("description")
                                             if not rs.bof then
                                                 do while not rs.eof
-                                                    response.write "<img src='"&rs("pic_route")&"' class='show_pic'>"
-                                                    response.write "<img src='"&rs("pic_route2")&"' class='show_pic'>"
+                                                    response.write "<img src='"&rs("detail_pic")&"' class='show_pic'>"
                                                     rs.movenext
                                                 loop
                                             end if
@@ -464,10 +463,33 @@
 	<div id="addtocart">
 		添加购物车
 	</div>
-	<div id="order">
-		立即购买
-	</div>
+	
 </div>
+<script type="text/javascript">
+function getParam(paramName){
+  paramValue ="";
+  isFound =false;
+  if (this.location.search.indexOf("?") ==0&&this.location.search.indexOf("=")>1){
+    arrSource = unescape(this.location.search).substring(1,this.location.search.length).split("&");
+    i =0;
+    while (i < arrSource.length &&!isFound){
+      if (arrSource[i].indexOf("=") >0){
+        if (arrSource[i].split("=")[0].toLowerCase()==paramName.toLowerCase()){
+          paramValue = arrSource[i].split("=")[1];
+          isFound =true;
+        }
+      }
+    i++;
+    }
+  }
+  return paramValue;
+}
+$("#addtocart").click(function(){
+    var gid=getParam("gid")
+    var href=location.href
+    location.href="add_cart.asp?"+"gid="+gid+"&href="+href
+});
+</script>>
         <!--brand area start-->
         <!-- <div class="logo_area">
             <div class="container">

@@ -8,6 +8,11 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 		<%
+        
+        if request.Cookies("whetherlogin")="False" then
+    Response.Write("<SCRIPT>alert('have not login!');this.location.href='"&request.ServerVariables("HTTP_REFERER")&"';</SCRIPT>")
+    response.end
+    end if
             Function ReadFromTextFile (FileUrl,CharSet)
                 dim str
                 set stm=server.CreateObject("adodb.stream")
@@ -24,6 +29,12 @@
             strconnection=ReadFromTextFile("other/odbc.ini","utf-8")
             set conn = server.createobject("adodb.connection") 
             conn.open strconnection
+        %>
+
+        <%
+            function load_ele(img_route,name,price,amount,totalprice,datee)
+                response.write "<tr><td class='product-remove product-remove_2'></td><td class='product-thumbnail product-thumbnail-2'><a href='#'><img src='"&img_route&"' alt='' /></a></td><td class='product-name product-name_2'><a href='#'>"&name&"</a></td><td class='product-price'><span class='amount-list amount-list-2'>￥"&price&"</span></td><td class='product-stock-status'><div class='latest_es_from_2'><input type='number' disabled='disabled' value='"&amount&"'></div></td><td class='product-price'><span class='amount-list amount-list-2'>￥"&totalprice&"</span></td><td class='order-date-concrete'><span class='amount-list amount-list-2' style='font-size: 10pt;'>"&datee&"</span></td></tr>"
+            end function
         %>
         <!-- all css here -->
         <!-- bootstrap v3.3.6 css -->
@@ -121,8 +132,7 @@
                     </div>
                 </div>
             </div>
-            <!--header top area end-->
-            <!--header middle area start-->
+
             <div class="header_middle">
                 <div class="container">
                     <div class="row">
@@ -144,7 +154,7 @@
                                     <div class="topcart">
                                         <a class="cart-toggler" href="">
                                         <i class="icon"></i>
-                                        <span class="my-cart">购物车</span>
+                                        <span class="my-cart">订单</span>
                                       
                                         <span class="fa fa-angle-down"></span>
                                         </a>
@@ -334,29 +344,23 @@
                 </div>
             </div>
         </div>
-        <!--social design arae end-->
-        <!-- shop area start-->
         <div class="shop_area">
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="shop_menu">
-                            <!-- <ul class="cramb_area cramb_area_2 ">
-                                <li><a href="index.asp">Home /</a></li>
-                                <li><a href="#">Cart</a></li>
-                            </ul> -->
+                           
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- shop area end-->
         <div class="shopping_cart">
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="account_heading account_heading_ah">
-                            <h1>购物车</h1>
+                            <h1>订单</h1>
                         </div>
                     </div>
                 </div>
@@ -379,32 +383,26 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td class="product-remove product-remove_2"><a href="#">×</a></td>
-                                                    <td class="product-thumbnail product-thumbnail-2"><a href="#"><img src="img/wishlist/pic-1.jpg" alt="" /></a></td>
-                                                    <td class="product-name product-name_2"><a href="#">Duis convallis</a></td>
-                                                    <td class="product-price"><span class="amount-list amount-list-2">￥100.00</span></td>
-                                                    <td class="product-stock-status">
-                                                        <div class="latest_es_from_2">
-                                                            <input type="number" value="1">
-                                                        </div>
-                                                    </td>
-                                                    <td class="product-price"><span class="amount-list amount-list-2">￥100.00</span></td>
-                                                    <td class="order-date-concrete"><span class="amount-list amount-list-2" style="font-size: 10pt;">2018-5-20 13:00:00</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="product-remove product-remove_2"><a href="#">×</a></td>
-                                                    <td class="product-thumbnail product-thumbnail-2"><a href="#"><img src="img/wishlist/pic-2.jpg" alt="" /></a></td>
-                                                    <td class="product-name"><a href="#">Adipiscing cursus eu</a></td>
-                                                    <td class="product-price"><span class="amount-list amount-list-2">￥300.00</span></td>
-                                                    <td class="product-stock-status">
-                                                        <div class="latest_es_from_2">
-                                                            <input type="number" value="1">
-                                                        </div>
-                                                    </td>
-                                                    <td class="product-price"><span class="amount-list amount-list-2">￥100.00</span></td>
-                                                    <td class="order-date-concrete"><span class="amount-list amount-list-2" style="font-size: 10pt;">2018-5-20 13:00:00</span></td>
-                                                </tr>
+                                                <%
+                                                    sql="select * from user where uid='"&Session("user")&"'and password='"&Session("pass")&"'"
+                                                    set rs=conn.execute(sql)
+                                                    if rs.bof then
+                                                        rs.close
+                                                        set rs=nothing
+                                                    else
+                                                        rs.close
+                                                        set rs=nothing
+                                                        sql2="select * from goods,gorder where goods.gid=gorder.gid "
+                                                        set rs=conn.execute(sql2)
+                                                        if not rs.bof then
+                                                            do while not rs.eof
+                                                                call load_ele(rs("pic_route"),rs("name"),rs("price"),rs("amount"),rs("price")*rs("amount"),rs("included_date"))
+                                                                rs.movenext
+                                                            loop
+                                                        end if
+                                                    end if
+                                                    
+                                                %>
                                             </tbody>
                                             <tfoot>
                                                

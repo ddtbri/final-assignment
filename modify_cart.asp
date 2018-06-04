@@ -21,6 +21,11 @@ modify_list 写需要调整数量的gid和amount gid:amount 逗号分隔 -->
             strconnection=ReadFromTextFile("other/odbc.ini","utf-8")
             set conn = server.createobject("adodb.connection") 
             conn.open strconnection
+            function make_id()
+            	RANDOMIZE
+            	num=int((100000+1)*rnd())
+            	make_id=year(now())&month(now())&day(now())&second(now())&num
+            end function
 %>
 <%
 	uid=Session("user")
@@ -32,7 +37,8 @@ modify_list 写需要调整数量的gid和amount gid:amount 逗号分隔 -->
 		Session("add_list")=""
 		add_=split(add_list,",")
 		for i=0 to ubound(add_)
-			sql="insert into cart values('"&uid&"','"&add_(i)&"',1)"
+			id=make_id()
+			sql="insert into cart values('"&uid&"','"&add_(i)&"',1,'"&id&"')"
 			conn.execute(sql)
 		next
 	end if
