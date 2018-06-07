@@ -59,9 +59,7 @@
 </script>
 
 <style type="text/css">
-	body{
-			background-color: skyblue;
-		}
+	
 	*{
 		box-sizing: border-box;
 	}
@@ -71,11 +69,18 @@
 		height: 300px;
 		position: absolute;
 		margin-top:70px;
-		margin-left:400px;
+		margin-left:700px;
 		padding-top:50px; 
 		padding-left: 120px;
+		background-color: rgb(129,81,58);
 	}
 
+body{
+	background-image: url("img/logo-pic/register.jpg");
+	background-size: 100% 100%;
+	background-attachment: fixed;
+
+}
 
 </style>
 </HEAD>
@@ -84,6 +89,7 @@
 <META content="Microsoft Visual Studio" name=GENERATOR>
 
 <!-- Insert HTML here -->
+<h1 style="margin-left: 43%;margin-top:150px;"><i>moblie 免费注册</i></h1>
 <div id="mydiv">
 <form  method="post" id="myform" >
 <p>用户名:<input type="text" name="yhm" id="yhm" value="<%=TheValue%>">

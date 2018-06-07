@@ -59,12 +59,12 @@
 	}
 
 	#detail{
-		margin-left: 240px; 
+		margin-left: 26%; 
 		margin-top: 50px;
 	}
 
 	#chooseorder{
-		margin-left: 380px;
+		margin-left: 45%;
 		margin-top: 50px;
 		width: 70%;
 		height: 60px;
@@ -110,10 +110,7 @@
 	#order:hover{
 		color: red;
 	}
-	.show_pic{
-		height: 300px;
-		width: 500px;
-	}
+	
 	#desc{
 		font-size: 20px;
 		font-style: normal;
@@ -201,7 +198,7 @@
                     <div class="row">
                         <div class="col-md-3">
                             <div class="logo_area">
-                                <a href="index.asp"><img src="img/logo-pic/logo.png" alt="" /></a>
+                                <a href="index.asp"><img src="img/logo-pic/logo.jpg" alt="" /></a>
                             </div>
                         </div>
                         <div class="col-md-9">
@@ -230,52 +227,14 @@
                                         <div class="all_catagories">
                                             <div class="enable_catagories">
                                                 <i class="fa fa-bars"></i>
-                                                <span>All Categories</span>
+                                                <span>所有种类</span>
                                                 <i class="fa fa-angle-down"></i>
                                             </div>
                                         </div>
                                         <div class="catagory_menu_area">
                                             <div class="catagory_mega_menu">
                                                 <div class="cat_mega_start">
-                                                     <ul class="list">
-                                                        <li class="next_area">
-                                                            <a class="item_link" href="#">
-                                                                <i class="fa fa-television"></i>
-                                                                <span class="link_content">
-                                                                    <span class="link_text">
-                                                                        笔记本
-                                                                        <!-- <span class="link_descr">Praesent accumsan elementum maximus </span> -->
-                                                                    </span>
-                                                                </span>
-                                                            </a>
-                                                           
-                                                        </li>
-                                                        <li class="differ_sec_area">
-                                                            <a class="item_link" href="#">
-                                                                <i class="fa fa-mobile"></i>
-                                                                <span class="link_content">
-                                                                    <span class="link_text">
-                                                                        手机
-                                                                       <!--  <span class="link_descr">Praesent accumsan elementum maximus </span> -->
-                                                                    </span>
-                                                                </span>
-                                                            </a>
-                                                          
-                                                        </li>
-                                                       
-                                                        <li>
-                                                            <a class="item_link item_link_2" href="#">
-                                                                <i class="fa fa-heart"></i>
-                                                                <span class="link_content">
-                                                                    <span class="link_text">
-                                                                        收藏
-                                                                        <!-- <span class="link_descr">Praesent accumsan elementum maximus</span> -->
-                                                                    </span>
-                                                                </span>
-                                                            </a>
-                                                        </li>
-                                                      
-                                                    </ul>
+                                                     
                                                 </div>
                                             </div>
                                         </div>
@@ -433,7 +392,9 @@
                                            
                                         </div>
                                     </div> -->
+                                    <h1 style="margin-left: 42%;">商品介绍</h1>
       	<div id="detail">
+
 		<!-- <img src="img/detail/p10.png"> -->
 		<%
 			gid=Request.QueryString("gid")
@@ -452,10 +413,10 @@
 	</div>
 	
 	<div id="chooseorder">
-	<p>商品介绍</p>
+	
 	<p id="desc">
 	<%
-		response.write des
+		
 		rs.close
 		set rs=nothing
 	%>
@@ -490,63 +451,7 @@ $("#addtocart").click(function(){
     location.href="add_cart.asp?"+"gid="+gid+"&href="+href
 });
 </script>>
-        <!--brand area start-->
-        <!-- <div class="logo_area">
-            <div class="container">
-                <div class="row">
-                    <div class="brand brand-2">
-                        <div class="new_product new_product_nx">
-                            <div class="product_heading product_heading_tf">
-                                <i class="fa fa-coffee"></i>
-                                <span>品牌 Logo</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="main_brand main_brand_tf">
-                            <div class="all_brand indicator-brand indicator-brand-7">
-                                <div class="col-md-12">
-                                    <div class="brand_pix">
-                                        <img src="img/brand-logo/logo_1.jpg" alt="" />
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="brand_pix">
-                                        <img src="img/brand-logo/logo_2.jpg" alt="" />
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="brand_pix">
-                                        <img src="img/brand-logo/logo_3.jpg" alt="" />
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="brand_pix">
-                                        <img src="img/brand-logo/logo_4.jpg" alt="" />
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="brand_pix">
-                                        <img src="img/brand-logo/logo_5.jpg" alt="" />
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="brand_pix">
-                                        <img src="img/brand-logo/logo_6.jpg" alt="" />
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="brand_pix">
-                                        <img src="img/brand-logo/logo_3.jpg" alt="" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-        <!--brand area end-->
+       
         <!--newsletter area start-->
         <div class="all_news_letter">
             <div class="news_letter">
@@ -668,7 +573,7 @@ $("#addtocart").click(function(){
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal fade" id="myModal2" role="dialog">
             <div class="modal-dialog modal-dialog-2">
                 <!-- Modal content-->
                 <div class="modal-content">

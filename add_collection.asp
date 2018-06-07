@@ -34,6 +34,12 @@ sql="select * from user where uid='"&Session("user")&"'and password='"&Session("
                                                     else
                                                     	rs.close
                                                         set rs=nothing
+                                                        sql="select * from cart where gid='"&gid&"' and uid='"&Session("user")&"'"
+set rs=conn.execute(sql)
+if not rs.bof then
+    Response.Write("<SCRIPT>alert('Thid good has existed');this.location.href='"&request.ServerVariables("HTTP_REFERER")&"';</SCRIPT>")
+    response.end
+end if
                                                         id=make_id()
                                                         sql2="insert into collection values('"&Session("user")&"','"&gid&"',1,'"&id&"')"
                                                         conn.execute(sql2)

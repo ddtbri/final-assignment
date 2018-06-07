@@ -139,7 +139,7 @@
                     <div class="row">
                         <div class="col-md-3">
                             <div class="logo_area">
-                                <a href="index.asp"><img src="img/logo-pic/logo.png" alt="" /></a>
+                                <a href="index.asp"><img src="img/logo-pic/logo.jpg" alt="" /></a>
                             </div>
                         </div>
                         <div class="col-md-9">
@@ -233,45 +233,7 @@
                                         <div class="catagory_menu_area">
                                             <div class="catagory_mega_menu">
                                                 <div class="cat_mega_start">
-                                                     <ul class="list">
-                                                        <li class="next_area">
-                                                            <a class="item_link" href="#">
-                                                                <i class="fa fa-television"></i>
-                                                                <span class="link_content">
-                                                                    <span class="link_text">
-                                                                        笔记本
-                                                                        <!-- <span class="link_descr">Praesent accumsan elementum maximus </span> -->
-                                                                    </span>
-                                                                </span>
-                                                            </a>
-                                                           
-                                                        </li>
-                                                        <li class="differ_sec_area">
-                                                            <a class="item_link" href="#">
-                                                                <i class="fa fa-mobile"></i>
-                                                                <span class="link_content">
-                                                                    <span class="link_text">
-                                                                        手机
-                                                                       <!--  <span class="link_descr">Praesent accumsan elementum maximus </span> -->
-                                                                    </span>
-                                                                </span>
-                                                            </a>
-                                                          
-                                                        </li>
-                                                       
-                                                        <li>
-                                                            <a class="item_link item_link_2" href="#">
-                                                                <i class="fa fa-heart"></i>
-                                                                <span class="link_content">
-                                                                    <span class="link_text">
-                                                                        收藏
-                                                                        <!-- <span class="link_descr">Praesent accumsan elementum maximus</span> -->
-                                                                    </span>
-                                                                </span>
-                                                            </a>
-                                                        </li>
-                                                      
-                                                    </ul>
+                                                     
                                                 </div>
                                             </div>
                                         </div>
@@ -441,10 +403,11 @@
                                                 </tbody>
                                             </table>
                                             <div class="wc-proceed-to-checkout">
-                                                <div class="button_act button_act-tc " data-toggle="modal"  id="submit1" style="cursor: pointer;">	结算购物车</div>
+                                                <div class="button_act button_act-tc " data-toggle="modal" data-target="#pay" id="submit3" style="cursor: pointer;">	结算购物车</div>
                                                 <div class="button_act button_act-tc " id="update" data-toggle="modal"  style="cursor: pointer;"> 提交购物车</div>
                                             </div>
                                             <script type="text/javascript">
+                                            $(function(){
                                                 $("#update").click(function(){
                                                     url=window.location.href
                                                     modify=""
@@ -461,6 +424,7 @@
                                                 $("#submit1").click(function(){
                                                     location.href="checkout.asp"
                                                 });
+                                            });
                                             </script>>
                                             <!-- <td class="product-remove product-remove_2"><a href="#">×</a></td><td class="product-thumbnail product-thumbnail-2"><a href="#"><img src="img/product-pic/1-150x98.jpg" alt=""></a></td><td class="product-name product-name_2"><a href="#">aaaaaa</a></td><td class="product-price"><span class="amount-list amount-list-2">￥200</span></td><td class="product-stock-status"><div class="latest_es_from_2"><input class="cart_amount" type="number" value="10"></div></td><td class="product-price"><span class="amount-list amount-list-2">￥2000</span></td> -->
                                             <script type="text/javascript">
@@ -782,6 +746,23 @@
             </div>
         </div>
 		
+        <div class="modal fade" id="pay" role="dialog">
+            <div class="dodal-dialog modal-dialog-2" >
+                <div calss="content" style="background-color:skyblue;margin-top: 200px;width: 600px;height: 500px;margin-left: 700px;">
+
+                <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h2 style="margin-top: 30px;margin-left: 200px;">扫描二维码付款</h2>
+                    </div>
+                    <div class="modal-body" style="width: 300px;height: 200px;">
+
+                        <img src="img/logo-pic/ma.jpg" style="margin-top:50px;margin-left: 150px; ">
+                        <input type="button" style="margin-top: 20px;margin-left: 260px; border: 1px solid;" value="已付款" id="submit1" />
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
 		
 		
         <!-- all js here -->

@@ -7,9 +7,7 @@
 
 	<style type="text/css">
 		
-		body{
-			background-color: skyblue;
-		}
+		
 	*{
 		box-sizing: border-box;
 	}
@@ -19,9 +17,10 @@
 		height: 300px;
 		position: absolute;
 		margin-top:70px;
-		margin-left:400px;
+		margin-left:700px;
 		padding-top:30px; 
 		padding-left: 120px;
+		background-color: rgb(151,140,154);
 	}
 
 a{
@@ -36,7 +35,11 @@ a{
 		color: red;	
 	}
 
-
+body{
+	background-image: url("img/logo-pic/login3.jpg");
+	background-size: 100% 100%;
+	background-attachment: fixed;
+}
 
 	</style>
 <script type="text/javascript" src="jquery-1.11.3.js"></script>
@@ -55,8 +58,9 @@ a{
 
 </head>
 <body>
+<h1 style="margin-left: 43%;margin-top:150px;"><i>moblie用户登录</i></h1>
 	<div id="mydiv">
-		<h2 style="margin-left: 60px;">用户登陆</h2>
+		
 	<form method="post" id="myform" action="judgelogin.asp">
 		<p>用户&nbsp;：<input type="text" name="yhm" id="yhm" style="border-radius: 2px;">
  <!-- <input type="button" value="测试用户名"   id="test" /></p> -->

@@ -43,12 +43,17 @@
                                                         	conn.execute(sql3)
                                                         	rs.movenext
                                                         loop
+                                                        sql3="delete from cart where uid='"&Session("user")&"'"
+                                                        conn.execute(sql3)
                                                     end if
                                                     end if
                                                     rs.close
                                                     conn.close
 %>
 <script type="text/javascript">
-alert("订单已提交")
-history.back();
+
+history.go(-1);
+window.location.reload();
+// self.location=document.referrer;
+alert("订单已提交");
 </script>>

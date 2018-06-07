@@ -130,7 +130,7 @@
                     <div class="row">
                         <div class="col-md-3">
                             <div class="logo_area">
-                                <a href="index.asp"><img src="img/logo-pic/logo.png" alt="" /></a>
+                                <a href="index.asp"><img src="img/logo-pic/logo.jpg" alt="" /></a>
                             </div>
                         </div>
                         <div class="col-md-9">
@@ -222,14 +222,14 @@
                                         <div class="catagory_menu_area">
                                             <div class="catagory_mega_menu">
                                                 <div class="cat_mega_start">
-                                                    <ul class="list">
+                                                    <!-- <ul class="list">
                                                         <li class="next_area">
                                                             <a class="item_link" href="#">
                                                                 <i class="fa fa-television"></i>
                                                                 <span class="link_content">
                                                                     <span class="link_text">
                                                                         笔记本
-                                                                        <!-- <span class="link_descr">Praesent accumsan elementum maximus </span> -->
+                                                                      
                                                                     </span>
                                                                 </span>
                                                             </a>
@@ -241,7 +241,7 @@
                                                                 <span class="link_content">
                                                                     <span class="link_text">
                                                                         手机
-                                                                       <!--  <span class="link_descr">Praesent accumsan elementum maximus </span> -->
+                                                                      
                                                                     </span>
                                                                 </span>
                                                             </a>
@@ -260,7 +260,7 @@
                                                             </a>
                                                         </li>
                                                       
-                                                    </ul>
+                                                    </ul> -->
                                                 </div>
                                             </div>
                                         </div>
@@ -362,10 +362,10 @@
         </div>
         <!-- googleMap-end -->
         <!-- comnt_area start -->
-        <div class="comnt_area">
+        <div class="comnt_area" style="margin-top:100px;">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-6" style="margin-top:100px;">
                         <div class="all_cntnt">
                             <div class="frm_content frm_content_2">
                                 <h1>留下评论</h1>
@@ -398,7 +398,7 @@
                             </form>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6" style="margin-top:100px; ">
                         <div class="all_cntnt">
                             <div class="frm_content frm_content_2">
                                 <h1>我们的联系方式</h1>

@@ -138,7 +138,7 @@
                     <div class="row">
                         <div class="col-md-3">
                             <div class="logo_area">
-                                <a href="index.asp"><img src="img/logo-pic/logo.png" alt="" /></a>
+                                <a href="index.asp"><img src="img/logo-pic/logo.jpg" alt="" /></a>
                             </div>
                         </div>
                         <div class="col-md-9">
@@ -230,45 +230,7 @@
                                         <div class="catagory_menu_area">
                                             <div class="catagory_mega_menu">
                                                 <div class="cat_mega_start">
-                                                     <ul class="list">
-                                                        <li class="next_area">
-                                                            <a class="item_link" href="#">
-                                                                <i class="fa fa-television"></i>
-                                                                <span class="link_content">
-                                                                    <span class="link_text">
-                                                                        笔记本
-                                                                        <!-- <span class="link_descr">Praesent accumsan elementum maximus </span> -->
-                                                                    </span>
-                                                                </span>
-                                                            </a>
-                                                           
-                                                        </li>
-                                                        <li class="differ_sec_area">
-                                                            <a class="item_link" href="#">
-                                                                <i class="fa fa-mobile"></i>
-                                                                <span class="link_content">
-                                                                    <span class="link_text">
-                                                                        手机
-                                                                       <!--  <span class="link_descr">Praesent accumsan elementum maximus </span> -->
-                                                                    </span>
-                                                                </span>
-                                                            </a>
-                                                          
-                                                        </li>
-                                                       
-                                                        <li>
-                                                            <a class="item_link item_link_2" href="#">
-                                                                <i class="fa fa-heart"></i>
-                                                                <span class="link_content">
-                                                                    <span class="link_text">
-                                                                        收藏
-                                                                        <!-- <span class="link_descr">Praesent accumsan elementum maximus</span> -->
-                                                                    </span>
-                                                                </span>
-                                                            </a>
-                                                        </li>
-                                                      
-                                                    </ul>
+                                                    
                                                 </div>
                                             </div>
                                         </div>

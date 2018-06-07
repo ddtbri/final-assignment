@@ -6,7 +6,5 @@
  * 安装mysql-odbc-connector并配置odbc
  * 在other/odbc.ini文件中填写你的db信息
  * 将网站复制到你的asp文件夹下  
-##2018-5-19  
- 1. 实现了从数据库显示商品到页面  
- 2. 后台的登录页面、  
+ * 数据库内执行other/database.sql 文件
 
