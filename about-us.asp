@@ -182,16 +182,16 @@
                                                
                                             </ol>
                                             <div class="top-subtotal">
-                                                Subtotal: <span class="sig-price">￥<%=alltotal%></span>
+                                                总价: <span class="sig-price">￥<%=alltotal%></span>
                                             </div>
                                             <div class="cart-button">
                                                 <ul>
                                                     <li>
-                                                        <a href="cart.asp">View my cart <i class="fa fa-angle-right"></i></a>
+                                                        <a href="cart.asp">浏览购物车 <i class="fa fa-angle-right"></i></a>
                                                     </li>
-                                                    <li>
+                                                   <!--  <li>
                                                         <a href="#">Checkout <i class="fa fa-angle-right"></i></a>
-                                                    </li>
+                                                    </li> -->
                                                 </ul>
                                             </div>
                                         </div>

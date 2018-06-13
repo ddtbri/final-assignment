@@ -2,6 +2,7 @@
 <!doctype html>
 <html class="no-js" lang="en">
     <head>
+    
     <%
     if request.Cookies("whetherlogin")="False" then
     Response.Write("<SCRIPT>alert('have not login!');this.location.href='"&request.ServerVariables("HTTP_REFERER")&"';</SCRIPT>")
@@ -23,6 +24,13 @@
             strconnection=ReadFromTextFile("other/odbc.ini","utf-8")
             set conn = server.createobject("adodb.connection") 
             conn.open strconnection
+    %>
+    <%
+
+sql = "select * from user where uid='"&Session("user")&"'"
+set rs = conn.execute(sql)
+TheValue=rs("address")
+TheValue2=rs("tel")
     %>
     <%
         function load_tr(img_route,name,price,amount,gid)
@@ -59,7 +67,16 @@
         <!-- modernizr js -->
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
         <script src="js/vendor/jquery-1.12.0.min.js"></script>
-        
+         <script type="text/javascript">
+   
+        $(function(){
+            $("#submit1").mouseover(function(){
+                if(($("#address").val())==""||($("#tel").val()=="")){
+                    alert("用户名或密码为空，请填写完整!");
+                }
+            });
+        });
+    </script>
     </head>
     <body>
 
@@ -402,10 +419,14 @@
                                                     </tr>
                                                 </tbody>
                                             </table>
+
+                                            <label>收获地址:<input type="text" name="address" id="address" style="width: 400px;" value="<%=TheValue%>" /></label>
+                                            <label>联系方式:<input type="tel" name="tel" id="tel" style="width:400px;" value="<%=TheValue2%>"/></label>
                                             <div class="wc-proceed-to-checkout">
                                                 <div class="button_act button_act-tc " data-toggle="modal" data-target="#pay" id="submit3" style="cursor: pointer;">	结算购物车</div>
                                                 <div class="button_act button_act-tc " id="update" data-toggle="modal"  style="cursor: pointer;"> 提交购物车</div>
                                             </div>
+                                           
                                             <script type="text/javascript">
                                             $(function(){
                                                 $("#update").click(function(){
@@ -422,7 +443,10 @@
                                                     window.location.href="renew_cart.asp?modify="+modify+"&href="+url
                                                 });
                                                 $("#submit1").click(function(){
-                                                    location.href="checkout.asp"
+                                                    var tel=$("#tel").val()
+                                                    var address=$("#address").val()
+                                                    alert(tel+address)
+                                                    location.href="checkout.asp?tel="+tel+"&address="+address
                                                 });
                                             });
                                             </script>>

@@ -25,6 +25,10 @@
             end function
         %>
 <%
+tel=request.QueryString("tel")
+address=request.QueryString("address")
+
+
 	sql="select * from user where uid='"&Session("user")&"'and password='"&Session("pass")&"'"
                                                     set rs=conn.execute(sql)
                                                     if rs.bof then
@@ -39,7 +43,7 @@
                                                         if not rs.bof then
                                                         do while not rs.eof
                                                             oid=make_id()
-                                                        	sql3="insert into gorder values('"&oid&"','"&rs("gid")&"','"&Session("user")&"',now(),"&rs("amount")&")"
+                                                        	sql3="insert into gorder values('"&oid&"','"&rs("gid")&"','"&Session("user")&"',now(),"&rs("amount")&",'"&tel&"','"&address&"')"
                                                         	conn.execute(sql3)
                                                         	rs.movenext
                                                         loop

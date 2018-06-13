@@ -38,8 +38,10 @@ history.back();//回到上一个页面
 		' session("yhm")=trim(request.form("yhm"))
 		Session("yhmm")=trim(request.form("yhmm"))
 		Session("email")=trim(request.form("email"))
+        Session("address")=trim(request.form("address"))
+        Session("tel")=trim(request.form("tel"))
 
-conn.execute("insert into user(uid,password,included_date,email_address)values('"&Session("yhm")&"','"&Session("yhmm")&"','"&now()&"','"&Session("email")&"')")
+conn.execute("insert into user(uid,password,included_date,email_address,address,tel)values('"&Session("yhm")&"','"&Session("yhmm")&"','"&now()&"','"&Session("email")&"','"&Session("address")&"','"&Session("tel")&"')")
 ' rs("uid")=session("yhm")
 ' rs("password")=session("yhmm")
 ' rs("included_data")=date()+time()
@@ -50,7 +52,8 @@ conn.execute("insert into user(uid,password,included_date,email_address)values('
 
 <script type="text/javascript">
 	alert("注册成功");
-    history.back();
+    // history.back();
+    window.location.href="login.asp";
 </script>
 <%end if
 end if

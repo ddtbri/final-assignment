@@ -67,7 +67,8 @@ class Gorder(models.Model):
     uid = models.ForeignKey('User', models.DO_NOTHING, db_column='uid')
     included_date = models.DateField(blank=True, null=True)
     amount = models.IntegerField(blank=True, null=True)
-
+    address=models.CharField(max_length=50)
+    tel=models.CharField(max_length=15)
     class Meta:
         managed = False
         db_table = 'gorder'
@@ -76,7 +77,8 @@ class User(models.Model):
     password = models.CharField(max_length=18)
     included_date = models.DateTimeField(blank=True, null=True)
     email_address = models.CharField(max_length=30, blank=True, null=True)
-
+    address=models.CharField(max_length=50)
+    tel=models.CharField(max_length=20)
     class Meta:
         managed = False
         db_table = 'user'

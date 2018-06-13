@@ -42,13 +42,13 @@ body{
 }
 
 	</style>
-<script type="text/javascript" src="jquery-1.11.3.js"></script>
+<script type="text/javascript" src="js/jquery-1.11.3.js"></script>
 	
 
 	<script type="text/javascript">
 		$(function(){
 			$("#but1").mouseover(function(){
-				if($("#yhm").text()==""||$("#yhmm").text()==""){
+				if($("#yhm").val()==""||$("#yhmm").val()==""){
 					alert("用户名或密码为空，请填写完整!");
 				}
 			});
@@ -70,6 +70,7 @@ body{
 <p><input id="but1" type="submit" value="登陆" style="margin-top: 40px;" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 <input type="reset" value="重填" style="margin-left: 86px;"></p></form>
 	</form>
+	<p><a href="changepassword.asp">修改密码</a></p>
 	<p id="regist"><a href="register.asp">免费注册</a></p>
 </div>
 </body>
